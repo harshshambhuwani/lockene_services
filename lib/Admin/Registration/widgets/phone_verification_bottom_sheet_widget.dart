@@ -5,20 +5,41 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
+import 'package:service/Admin/new_modified_files/company_module/new_company_view.dart';
+import 'package:service/features/common/ui.dart';
+import 'package:service/styles/styles.dart';
 
 import '../../../features/bookings/widgets/otp_text_field_widget.dart';
 import '../../../features/common/block_button_widget.dart';
 import '../../../features/profile/controllers/profile_controller.dart';
 import '../../../routes/app_routes.dart';
 
+class PhoneVerificationBottomSheetWidget extends StatefulWidget {
+  String? fullName;
+  String? companyName;
+  String? emailAddress;
+  String? passwordValue;
+  int? otpValue;
+  PhoneVerificationBottomSheetWidget(
+      {Key? key,
+      this.fullName,
+      this.companyName,
+      this.emailAddress,
+      this.passwordValue,
+      this.otpValue})
+      : super(key: key);
 
+  @override
+  State<PhoneVerificationBottomSheetWidget> createState() =>
+      _PhoneVerificationBottomSheetWidgetState();
+}
 
-
-class PhoneVerificationBottomSheetWidget extends GetView<ProfileController> {
-  // int _Counter = 60;
-  // late Timer _timer;
+class _PhoneVerificationBottomSheetWidgetState
+    extends State<PhoneVerificationBottomSheetWidget> {
   int start = 60;
+  TextEditingController otpController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -26,70 +47,135 @@ class PhoneVerificationBottomSheetWidget extends GetView<ProfileController> {
     return Container(
       decoration: BoxDecoration(
         color: Colors.white,
-        borderRadius: BorderRadius.only(topRight: Radius.circular(20), topLeft: Radius.circular(20)),
+        borderRadius: const BorderRadius.only(
+            topRight: Radius.circular(20), topLeft: Radius.circular(20)),
         boxShadow: [
-          BoxShadow(color: Get.theme.focusColor.withOpacity(0.4), blurRadius: 30, offset: Offset(0, -30)),
+          BoxShadow(
+              color: Get.theme.focusColor.withOpacity(0.4),
+              blurRadius: 30,
+              offset: Offset(0, -30)),
         ],
       ),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          Container(
-            height: 30,
-            width: double.infinity,
-            padding: EdgeInsets.symmetric(vertical: 13, horizontal: (Get.width / 2) - 30),
-            decoration: BoxDecoration(
-              color: Get.theme.focusColor.withOpacity(0.1),
-              borderRadius: BorderRadius.only(topRight: Radius.circular(20), topLeft: Radius.circular(20)),
-            ),
-            child: Container(
+      child: SingleChildScrollView(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Container(
+              height: 30,
+              width: double.infinity,
+              padding: EdgeInsets.symmetric(
+                  vertical: 13, horizontal: (Get.width / 2) - 30),
               decoration: BoxDecoration(
-                color: Get.theme.focusColor.withOpacity(0.5),
-                borderRadius: BorderRadius.circular(3),
+                color: Get.theme.focusColor.withOpacity(0.1),
+                borderRadius: const BorderRadius.only(
+                    topRight: Radius.circular(20),
+                    topLeft: Radius.circular(20)),
               ),
-              //child: SizedBox(height: 1,),
+              child: Container(
+                decoration: BoxDecoration(
+                  color: Get.theme.focusColor.withOpacity(0.5),
+                  borderRadius: BorderRadius.circular(3),
+                ),
+                //child: SizedBox(height: 1,),
+              ),
             ),
-          ),
-          Text(
-            "We sent the OTP code to your Email-Id, please enter below to verify your Email".tr,
-            style: Get.textTheme.bodyText1,
-            textAlign: TextAlign.center,
-          ).paddingSymmetric(horizontal: 20, vertical: 10),
-          TextFieldWidget(
-            labelText: "OTP Code".tr,
-            hintText: "----  ----  ----  ----  ----  ----".tr,
-            style: Get.textTheme.headline4!.merge(TextStyle(letterSpacing: 6)),
-            textAlign: TextAlign.center,     
-            keyboardType: TextInputType.number,
-            onChanged: (input) => controller.smsSent.value = input,
-          ),
-
-          // Coundown(),
-          StartT(),
-
-
-
-          BlockButtonWidget(
-            onPressed: ()  async {
-              // await controller.verifyPhone();
-
-              // _navigateToAnotherScreen();
-              Navigator.pop(context);
-              Get.offAndToNamed(Routes.COMPANY);
-              // Navigator.pop(context);
-
-              // Get.back();
-              // Get.back();
-            },
-            color: Colors.orange,
-            text: Text(
-              "Verify".tr,
-              style: Get.textTheme.headline6!.merge(TextStyle(color: Colors.white)),
+            Text(
+              "We sent the OTP code to your Email-Id, please enter below to verify your Email"
+                  .tr,
+              style: Get.textTheme.bodyText1,
+              textAlign: TextAlign.center,
+            ).paddingSymmetric(horizontal: 20, vertical: 10),
+            // TextFieldWidget(
+            //   labelText: "OTP Code".tr,
+            //   hintText: "----  ----  ----  ----  ----  ----".tr,
+            //   style: Get.textTheme.headline4!.merge(TextStyle(letterSpacing: 6)),
+            //   textAlign: TextAlign.center,
+            //   controller: otpController,
+            //   keyboardType: TextInputType.number,
+            //  // onChanged: (input) => controller.smsSent.value = input,
+            // ),
+            Container(
+              padding: const EdgeInsets.only(left: 20, right: 20, top: 20),
+              margin:
+                  const EdgeInsets.only(top: 0, left: 20, right: 10, bottom: 0),
+              decoration: BoxDecoration(
+                  color: page,
+                  // borderRadius: const BorderRadius.vertical(
+                  //     top: Radius.circular(10)),
+                  boxShadow: [
+                    BoxShadow(
+                        color: Get.theme.focusColor.withOpacity(0.1),
+                        blurRadius: 10,
+                        offset: const Offset(0, 5)),
+                  ],
+                  border: Border.all(
+                      color: Get.theme.focusColor.withOpacity(0.05))),
+              child: Center(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  // mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      "OTP Code" ?? "",
+                      style: Get.textTheme.bodyText1!
+                          .merge(const TextStyle(letterSpacing: 2)),
+                      textAlign: TextAlign.start,
+                    ),
+                    TextFormField(
+                      keyboardType: TextInputType.number,
+                      controller: otpController,
+                      style: Get.textTheme.headline4!
+                          .merge(TextStyle(letterSpacing: 6)),
+                      obscureText: false,
+                      maxLength: 6,
+                      textAlign: TextAlign.center,
+                      cursorColor: Colors.orange,
+                      decoration: Ui.getInputDecoration(
+                        hintText: "----  ----  ----  ----  ----  ----" ?? '',
+                      ),
+                    ),
+                  ],
+                ),
+              ),
             ),
-          ).paddingSymmetric(vertical: 30, horizontal: 20),
 
-        ],
+            // Coundown(),
+            StartT(),
+
+            BlockButtonWidget(
+              onPressed: () async {
+                // await controller.verifyPhone();
+
+                // // _navigateToAnotherScreen();
+                // Navigator.pop(context);
+                // // Get.offAndToNamed(Routes.COMPANY);
+                if (otpController.text == widget.otpValue.toString()) {
+                  showToast("");
+                  Get.to(CompanyView(
+                      fullName: widget.fullName,
+                      companyName: widget.companyName,
+                      emailAddress: widget.emailAddress,
+                      passwordValue: widget.passwordValue));
+                } else {
+                  showToast("Otp Is Incorrect");
+                }
+
+                print("fromOnTap ${otpController.text}");
+                // Navigator.pop(context);
+
+                // Get.back();
+                // Get.back();
+              },
+              color: Colors.orange,
+              text: Text(
+                "Verify".tr,
+                style: Get.textTheme.headline6!
+                    .merge(TextStyle(color: Colors.white)),
+              ),
+            ).paddingSymmetric(vertical: 30, horizontal: 20),
+          ],
+        ),
       ),
     );
   }
@@ -100,8 +186,14 @@ class PhoneVerificationBottomSheetWidget extends GetView<ProfileController> {
     Get.offAndToNamed(Routes.COMPANY);
   }
 
+  void showToast(String message) {
+    Fluttertoast.showToast(
+      msg: message,
+      toastLength: Toast.LENGTH_SHORT,
+      gravity: ToastGravity.CENTER,
+    );
+  }
 }
-
 
 class StartT extends StatefulWidget {
   const StartT({Key? key}) : super(key: key);
@@ -125,7 +217,7 @@ class _StartTState extends State<StartT> {
     const oneSec = const Duration(seconds: 1);
     timer = Timer.periodic(
       oneSec,
-          (Timer timer) {
+      (Timer timer) {
         if (_remainingTime == 0) {
           timer.cancel();
           // wait = false;
@@ -151,18 +243,29 @@ class _StartTState extends State<StartT> {
     return Column(
       children: [
         Container(
-          child:
-          _remainingTime !=0 ?
-          Text('Re-send Otp in $_remainingTime seconds',textAlign: TextAlign.center,style: Get.textTheme.subtitle1!.merge(TextStyle(letterSpacing: 2,color: Colors.orange,fontWeight: FontWeight.w500)),
-          ).paddingSymmetric(horizontal: 10,vertical: 10.0):GestureDetector(
-            onTap: (){
-              resetTimer();              // wait = true;
-              print("hi");
-
-            },
-            child: Text('Re-send Otp',textAlign: TextAlign.center,style: Get.textTheme.subtitle1!.merge(TextStyle(letterSpacing: 2,color: Colors.orange,fontWeight: FontWeight.w500)),
-            ).paddingSymmetric(horizontal: 10,vertical: 10.0),
-          ),
+          child: _remainingTime != 0
+              ? Text(
+                  'Re-send Otp in $_remainingTime seconds',
+                  textAlign: TextAlign.center,
+                  style: Get.textTheme.subtitle1!.merge(TextStyle(
+                      letterSpacing: 2,
+                      color: Colors.orange,
+                      fontWeight: FontWeight.w500)),
+                ).paddingSymmetric(horizontal: 10, vertical: 10.0)
+              : GestureDetector(
+                  onTap: () {
+                    resetTimer(); // wait = true;
+                    print("hi");
+                  },
+                  child: Text(
+                    'Re-send Otp',
+                    textAlign: TextAlign.center,
+                    style: Get.textTheme.subtitle1!.merge(TextStyle(
+                        letterSpacing: 2,
+                        color: Colors.orange,
+                        fontWeight: FontWeight.w500)),
+                  ).paddingSymmetric(horizontal: 10, vertical: 10.0),
+                ),
         ),
         // _remainingTime==0 ?
         //   Text('Re-send Otp',textAlign: TextAlign.center,style: Get.textTheme.subtitle1!.merge(TextStyle(letterSpacing: 2,color: Colors.orange,fontWeight: FontWeight.w500)),
@@ -172,10 +275,7 @@ class _StartTState extends State<StartT> {
       ],
     );
   }
-
 }
-
-
 
 // class Coundown extends StatefulWidget {
 //

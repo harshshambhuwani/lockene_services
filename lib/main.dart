@@ -2,22 +2,20 @@ import 'dart:async';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
-import 'package:localization/localization.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:service/Admin/new_modified_files/company_module/new_company_view.dart';
 import 'package:service/routes/app_routes.dart';
 import 'package:service/routes/theme1_app_pages.dart';
-
-
-
-import 'demo1.dart';
-import 'features/demo.dart';
-import 'features/splashfront/screen/splashfront.dart';
+import 'drop_down_search.dart';
 import 'styles/styles.dart';
 
 void main() {
   runApp(const MyApp());
+  SystemChrome.setPreferredOrientations(
+      [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
 }
 
 class MyApp extends StatelessWidget {
@@ -29,8 +27,10 @@ class MyApp extends StatelessWidget {
     return GetMaterialApp(
       title:'Lockene',
       debugShowCheckedModeBanner: false,
-      home:
-      MySplashScreen(),
+       home: MySplashScreen(),
+     //home: CompanyView(),
+    // home: MultiSelectDialogExample(),
+    //   home: MyHomePage(),
       // Demo(),
       // MySplashScreen(),
       // initialRoute: MySplashScreen(),
