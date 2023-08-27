@@ -1,9 +1,11 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_session_manager/flutter_session_manager.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
 import 'package:service/Admin/new_modified_files/login_module/new_login_screen.dart';
+import 'package:service/Admin/session/session.dart';
 
 import 'package:video_player/video_player.dart';
 import '../../../styles/styles.dart';
@@ -23,6 +25,7 @@ class SplashFrontNew extends StatefulWidget{
 class _SplashFrontNewState extends State<SplashFrontNew> {
 
   late VideoPlayerController _controller;
+  bool? isLogin;
   @override
   void initState() {
     super.initState();
@@ -34,6 +37,14 @@ class _SplashFrontNewState extends State<SplashFrontNew> {
         _controller.play();
         // Ensure the first frame is shown after the video is initialized, even before the play button has been pressed.
         setState(() {});
+
+        getSessionValue().then((value) => {
+          isLogin = value,
+          print("fromGetSessionValue ${isLogin}"),
+        });
+
+
+
       });
   }
 
@@ -68,9 +79,10 @@ class _SplashFrontNewState extends State<SplashFrontNew> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       GestureDetector(
-                        onTap: () {
+                        onTap: () async {
                         //  Get.toNamed(Routes.ADLOGIN);
-                          Get.to(const NewLoginScreen());
+                          isLogin! ? await Get.toNamed(Routes.TECHDASHBOARD,
+                              arguments: "admin")  : Get.to(const NewLoginScreen());
                         },
                         child: SizedBox(
                           width: size.height * 0.15,
@@ -82,7 +94,7 @@ class _SplashFrontNewState extends State<SplashFrontNew> {
                       SizedBox(width: size.height * 0.08,),
                       GestureDetector(
                         onTap: () {
-                          Get.toNamed(Routes.LOGIN);
+                         // Get.toNamed(Routes.LOGIN);
                         },
                         child: Container(
                           width: size.height * 0.15,
@@ -123,6 +135,10 @@ class _SplashFrontNewState extends State<SplashFrontNew> {
         ),
       ),
     );
+  }
+
+  Future<bool> getSessionValue() async {
+    return await SessionManager().get(SessionDataKey().isLogin);
   }
   // @override
   // Widget build(BuildContext context) {

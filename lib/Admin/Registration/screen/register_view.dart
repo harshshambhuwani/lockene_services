@@ -5,6 +5,7 @@ import '../../../features/common/block_button_widget.dart';
 import '../../../features/common/circular_loading_widget.dart';
 import '../../../features/common/text_field_widget.dart';
 import '../../../features/common/ui.dart';
+import '../../../routes/app_routes.dart';
 import '../../../styles/styles.dart';
 import '../controller/regist_controller.dart';
 
@@ -160,7 +161,7 @@ class RegisterView extends GetView<RegistController>{
                   // PhoneVerificationBottomSheetWidget();
                   // print("cd");
 
-                  // Get.offAllNamed(Routes.COMPANY);
+                   Get.offAllNamed(Routes.COMPANY);
                 },
                 color: Colors.orange,
                 text: Text(
