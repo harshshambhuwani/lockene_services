@@ -124,7 +124,7 @@ class Theme1AppPages {
     GetPage(name: Routes.TRACKSTATUS, page: () => TrackStatusView(), binding: TrackBinding()),
     GetPage(name: Routes.ADD_MEMBER, page: () => AddMemberView(), binding: AddMemberBinding()),
     GetPage(name: Routes.SUCCESS_MEMBER, page: () => AddSuccessView(), binding: AddMemberBinding()),
-    GetPage(name: Routes.ALL_MEMBER, page: () => SearchView(), binding: AllMembBinding()),
+   // GetPage(name: Routes.ALL_MEMBER, page: () => SearchView(), binding: AllMembBinding()),
     GetPage(name: Routes.ADD_QUOTE, page: () => AddQuoteView(), binding: AddQuoteBinding()),
     GetPage(name: Routes.ADD_JOB, page: () => AddJobView(), binding: AddJobBinding()),
     GetPage(name: Routes.ADD_INVOICE, page: () => AddInvoiceView(), binding: AddInvoiceBinding()),

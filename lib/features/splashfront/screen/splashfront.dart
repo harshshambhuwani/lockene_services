@@ -25,7 +25,7 @@ class SplashFrontNew extends StatefulWidget{
 class _SplashFrontNewState extends State<SplashFrontNew> {
 
   late VideoPlayerController _controller;
-  bool? isLogin;
+  bool isLogin = false;
   @override
   void initState() {
     super.initState();
@@ -39,7 +39,12 @@ class _SplashFrontNewState extends State<SplashFrontNew> {
         setState(() {});
 
         getSessionValue().then((value) => {
-          isLogin = value,
+          if(value != null){
+            isLogin = value,
+          }else{
+            isLogin = false,
+          },
+
           print("fromGetSessionValue ${isLogin}"),
         });
 
@@ -81,7 +86,7 @@ class _SplashFrontNewState extends State<SplashFrontNew> {
                       GestureDetector(
                         onTap: () async {
                         //  Get.toNamed(Routes.ADLOGIN);
-                          isLogin! ? await Get.toNamed(Routes.TECHDASHBOARD,
+                          isLogin ? await Get.toNamed(Routes.TECHDASHBOARD,
                               arguments: "admin")  : Get.to(const NewLoginScreen());
                         },
                         child: SizedBox(

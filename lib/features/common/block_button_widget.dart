@@ -22,7 +22,7 @@ class BlockButtonWidget extends StatelessWidget {
           : null,
       child:
       MaterialButton(
-        onPressed: this.onPressed,
+        onPressed: onPressed,
         padding: EdgeInsets.symmetric(horizontal: 8, vertical: 12),
         color: this.color,
         disabledElevation: 0,

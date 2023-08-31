@@ -121,6 +121,8 @@ class _CompanyViewState extends State<CompanyView> {
   List<ServiceData>? serviceData;
   List<String> selectIndustry = [];
   bool isLoading = true;
+  bool isLoading1 = false;
+  bool agree = false;
   List<String> selectedItems = [];
   List<String?>? companyIndustryList = [];
 
@@ -261,9 +263,6 @@ class _CompanyViewState extends State<CompanyView> {
                         ],
                       ),
                     ),
-                    // Dropdown(),
-                    //const Drop(),
-
                     Column(
                       children: [
                         Container(
@@ -383,61 +382,7 @@ class _CompanyViewState extends State<CompanyView> {
                                   onTap: () {
                                     print("fromOnTap");
                                     _showMultiSelect(companyIndustryList);
-                                    //  showDialog(
-                                    //    context: context,
-                                    //   // builder: (BuildContext context) => MultiSelectDialog(selectedItemList : serviceData),
-                                    //    builder: (BuildContext contexts) => StatefulBuilder(
-                                    //      builder: (context, setStates) {
-                                    //        return AlertDialog(
-                                    //          title: const Text('Select Items'),
-                                    //          content: SizedBox(
-                                    //            width: double.maxFinite,
-                                    //            child: ListView.builder(
-                                    //              itemCount: serviceData?.length,
-                                    //              itemBuilder: (context, index) {
-                                    //                final item = serviceData?[index];
-                                    //                return CheckboxListTile(
-                                    //                  title: Text(serviceData?[index].customService.toString() ?? ""),
-                                    //                  value: selectedItems.contains(serviceData?[index].customService.toString()),
-                                    //                  onChanged: (bool? value) {
-                                    //                    setStates(() {
-                                    //                      if (value != null && value) {
-                                    //                        selectedItems.add(serviceData?[index].customService.toString() ?? "");
-                                    //                        print("fromOnChanger ${_selectedItems.length}");
-                                    //                        _selectedItems = selectedItems;
-                                    //                      } else {
-                                    //                        selectedItems.remove(serviceData?[index].customService.toString() ?? "");
-                                    //                        _selectedItems = selectedItems;
-                                    //                      }
-                                    //                    });
-                                    //                  },
-                                    //                );
-                                    //              },
-                                    //            ),
-                                    //          ),
-                                    //          actions: [
-                                    //            TextButton(
-                                    //              onPressed: () {
-                                    //                Navigator.of(context).pop();
-                                    //              },
-                                    //              child: const Text('Cancel'),
-                                    //            ),
-                                    //            TextButton(
-                                    //              // onPressed: () {
-                                    //              //   // Do something with selected items
-                                    //              //   print('Selected items: $selectedItems');
-                                    //              //   Navigator.of(context).pop(context,_selectedItems);
-                                    //              //
-                                    //              // },
-                                    //              onPressed: _submit,
-                                    //              child: const Text('Confirm'),
-                                    //            ),
-                                    //          ],
-                                    //        );
-                                    //      }
-                                    //    ),
-                                    //  );
-                                  },
+                                    },
                                   child: Column(
                                     children: [
                                       Container(
@@ -1018,59 +963,164 @@ class _CompanyViewState extends State<CompanyView> {
                             : Container(),
                       ],
                     ),
-                    BlockButtonWidget(
-                      onPressed: () {
-                        // showDialog(
-                        //     barrierDismissible: false,
-                        //     context: context,
-                        //     builder: (_) {
-                        //       // return CustomDialog();
-                        //
-                        //       return Alert();
-                        //     });
-
-                        if (phoneNumberController.text == "") {
-                          showToast("Please enter phone number");
-                        } else if (click == "") {
-                          showToast("Please choose company type first");
-                        } else if (countryValue == "") {
-                          showToast("Please select the country");
-                        } else if (stateValue == "") {
-                          showToast("Please select the state");
-                        } else if (cityValue == "") {
-                          showToast("Please select the cityValue");
-                        } else if (pincodeController.text == "") {
-                          showToast("Please enter the pincode");
-                        } else if (companyAddressController.text == "") {
-                          showToast("Please enter the company address");
-                        } else {
-                          ApiInterface().registerPrivateFsm(
-                              widget.fullName
-                              ,widget.companyName,
-                              widget.emailAddress,
-                              widget.passwordValue,
-                              phoneNumberController.text,
-                              countryValue,
-                              stateValue,
-                              cityValue,
-                              pincodeController.text,
-                              companyAddressController.text
-                          ).then((value) => {
-                            if(value.response?.status == "success"){
-                              Get.to(const NewLoginScreen()),
-                            }else{
-                              showToast("Something went wrong"),
-                        }
+                    // BlockButtonWidget(
+                    //   onPressed: () {
+                    //     // showDialog(
+                    //     //     barrierDismissible: false,
+                    //     //     context: context,
+                    //     //     builder: (_) {
+                    //     //       // return CustomDialog();
+                    //     //
+                    //     //       return Alert();
+                    //     //     });
+                    //
+                    //     print("fromOnTap");
+                    //
+                    //     if (phoneNumberController.text == "") {
+                    //       showToast("Please enter phone number");
+                    //     } else if (click == "") {
+                    //       showToast("Please choose company type first");
+                    //     } else if (countryValue == "") {
+                    //       showToast("Please select the country");
+                    //     } else if (stateValue == "") {
+                    //       showToast("Please select the state");
+                    //     } else if (cityValue == "") {
+                    //       showToast("Please select the cityValue");
+                    //     } else if (pincodeController.text == "") {
+                    //       showToast("Please enter the pincode");
+                    //     } else if (companyAddressController.text == "") {
+                    //       showToast("Please enter the company address");
+                    //     } else {
+                    //       ApiInterface().registerPrivateFsm(
+                    //           widget.fullName
+                    //           ,widget.companyName,
+                    //           widget.emailAddress,
+                    //           widget.passwordValue,
+                    //           phoneNumberController.text,
+                    //           countryValue,
+                    //           stateValue,
+                    //           cityValue,
+                    //           pincodeController.text,
+                    //           companyAddressController.text
+                    //       ).then((value) => {
+                    //         print("fromApiCallSomething ${value.response?.status}"),
+                    //         if(value.response?.status == "success"){
+                    //           Get.to(const NewLoginScreen()),
+                    //         }else if(value.response?.status == "0"){
+                    //           showToast("Something went wrong"),
+                    //     }
+                    //       });
+                    //     }
+                    //   },
+                    //   color: Colors.orange,
+                    //   text: Text(
+                    //     "Submit".tr,
+                    //     style: Get.textTheme.headline6!
+                    //         .merge(TextStyle(color: Colors.white)),
+                    //   ),
+                    // ).paddingOnly(top: 25, bottom: 25, right: 20, left: 20),
+                    Row(
+                      children: [
+                        Material(
+                          child: Checkbox(
+                            activeColor: Colors.orange,
+                            checkColor: Colors.white,
+                            value: agree,
+                            onChanged: (value) {
+                              setState(() {
+                                agree = value ?? false;
+                              });
+                            },
+                          ),
+                        ),
+                        const Text(
+                          'I have read and accept terms and conditions',
+                          overflow: TextOverflow.ellipsis,
+                        )
+                      ],
+                    ).paddingOnly(top: 0, bottom: 0, right: 20, left: 20),
+                    Container(
+                      width: Get.size.width,
+                      height: 52,
+                      //color: Colors.orange,
+                      decoration: const BoxDecoration(
+                          color: Colors.orange,
+                          borderRadius:
+                          BorderRadius.all(Radius.circular(10))),
+                      child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.transparent,
+                            shadowColor: Colors.transparent),
+                        onPressed: () async {
+                          setState(() {
+                            isLoading1 = true;
                           });
-                        }
-                      },
-                      color: Colors.orange,
-                      text: Text(
-                        "Submit".tr,
-                        style: Get.textTheme.headline6!
-                            .merge(TextStyle(color: Colors.white)),
+                          await Future.delayed(const Duration(seconds: 2));
+                          setState(() {
+                            isLoading1 = false;
+                          });
+                          if (isLoading1 == false) {
+                            if (phoneNumberController.text == "") {
+                              showToast("Please enter phone number");
+                            }
+                            else if (click == "") {
+                              showToast("Please choose company type first");
+                            }
+                            else if (countryValue == "")
+                            {
+                              showToast("Please select the country");
+                            } else if (stateValue == "")
+                            {
+                              showToast("Please select the state");
+                            } else if (cityValue == "") {
+                              showToast("Please select the cityValue");
+                            }
+                            else if (pincodeController.text == "") {
+                              showToast("Please enter the pincode");
+                            }
+                            else if (companyAddressController.text == "") {
+                              showToast("Please enter the company address");
+                            }
+                            else if (agree !=true) {
+                              showToast("Please accept the terms and conditions");
+                            }
+                            else {
+                              ApiInterface().registerPrivateFsm(
+                                  widget.fullName
+                                  ,widget.companyName,
+                                  widget.emailAddress,
+                                  widget.passwordValue,
+                                  phoneNumberController.text,
+                                  countryValue,
+                                  stateValue,
+                                  cityValue,
+                                  pincodeController.text,
+                                  companyAddressController.text
+                              ).then((value) => {
+                                if(value.response?.status == "success"){
+                                  showToast(value.response?.message.toString() ?? "Registered Successfully!"),
+                                  Get.to(const NewLoginScreen()),
+                                }else if(value.response?.status == "0"){
+                                  showToast(value.response?.message.toString() ?? "Entered Mobile Number Already Exists!"),
+                                }else{
+                                  showToast("Something went wrong!"),
+                                }
+                              });
+                            }
+                          }
+                        },
+                        child: (isLoading1)
+                            ? const SizedBox(
+                            width: 16,
+                            height: 16,
+                            child: CircularProgressIndicator(
+                              color: Colors.white,
+                              strokeWidth: 1.5,
+                            ))
+                            : const Text("Submit",
+                            style: TextStyle(fontSize: 20,color: Colors.white)),
                       ),
-                    ).paddingOnly(top: 25, bottom: 25, right: 20, left: 20),
+                    ).paddingOnly(top: 5, bottom: 25, right: 20, left: 20),
                   ],
                 )
               ],
@@ -1107,9 +1157,9 @@ class _CompanyViewState extends State<CompanyView> {
                             getpcam();
                           }
                         },
-                        child: Column(
+                        child: const Column(
                           mainAxisAlignment: MainAxisAlignment.center,
-                          children: const [
+                          children: [
                             Icon(
                               Icons.camera_enhance_rounded,
                               size: 40,
@@ -1138,9 +1188,9 @@ class _CompanyViewState extends State<CompanyView> {
                           }
                           Navigator.pop(context);
                         },
-                        child: Column(
+                        child: const Column(
                           mainAxisAlignment: MainAxisAlignment.center,
-                          children: const [
+                          children: [
                             Icon(
                               Icons.image,
                               size: 40,
@@ -1160,14 +1210,6 @@ class _CompanyViewState extends State<CompanyView> {
                       )),
                 ],
               ),
-
-              // decoration: BoxDecoration(
-              //   color: Colors.white,
-              //   borderRadius: BorderRadius.only(topRight: Radius.circular(20), topLeft: Radius.circular(20)),
-              //   boxShadow: [
-              //     BoxShadow(color: Get.theme.focusColor.withOpacity(0.4), blurRadius: 30, offset: Offset(0, -30)),
-              //   ],
-              // ),
             ),
           );
         });
@@ -1186,16 +1228,6 @@ class _CompanyViewState extends State<CompanyView> {
   }
 
   void _showMultiSelect(List<String?>? items) async {
-    // a list of selectable items
-    // these items can be hard-coded or dynamically fetched from a database/API
-    // final List<String> items = [
-    //   'AC & Refrigrators',
-    //   'TV & Washing Machine',
-    //   'Carpenter',
-    //   'Electrician',
-    //   'Computer & CCTV',
-    // ];
-
     final List<String>? results = await showDialog(
       context: context,
       builder: (BuildContext context) {

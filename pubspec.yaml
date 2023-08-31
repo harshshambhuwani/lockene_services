@@ -48,7 +48,8 @@ dependencies:
   get: 4.6.5
   get_storage: 2.0.3
   # FONT
-  google_fonts: 3.0.1
+# google_fonts:
+#  google_fonts:
   auto_size_text: 3.0.0
   # WEB
   webview_flutter:
@@ -98,6 +99,11 @@ dependencies:
   csc_picker: ^0.2.7
 #  toggle_switch: ^2.0.1
 #  contacts_service: ^0.4.6
+  #for generating hive_adapter
+  #flutter packages pub run build_runner build --delete-conflicting-outputs
+  #flutter build apk --release --no-sound-null-safety
+  #flutter build apk --split-per-abi --no-sound-null-safety
+  #flutter run --release --no-sound-null-safety
 
 
 #  google_maps_place_picker_mb:

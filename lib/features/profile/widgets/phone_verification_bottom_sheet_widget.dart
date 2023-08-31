@@ -38,7 +38,7 @@ class PhoneVerificationBottomSheetWidget extends GetView<ProfileController> {
             padding: EdgeInsets.symmetric(vertical: 13, horizontal: (Get.width / 2) - 30),
             decoration: BoxDecoration(
               color: Get.theme.focusColor.withOpacity(0.1),
-              borderRadius: BorderRadius.only(topRight: Radius.circular(20), topLeft: Radius.circular(20)),
+              borderRadius: const BorderRadius.only(topRight: Radius.circular(20), topLeft: Radius.circular(20)),
             ),
             child: Container(
               decoration: BoxDecoration(
@@ -62,7 +62,7 @@ class PhoneVerificationBottomSheetWidget extends GetView<ProfileController> {
             onChanged: (input) => controller.smsSent.value = input,
           ),
 
-          StartT(),
+          const StartT(),
 
 
 
@@ -138,7 +138,7 @@ class _StartTState extends State<StartT> {
           ).paddingSymmetric(horizontal: 10,vertical: 10.0):GestureDetector(
             onTap: (){
               resetTimer();              // wait = true;
-              print("hi");
+              //print("hi");
 
             },
             child: Text('Re-send Otp',textAlign: TextAlign.center,style: Get.textTheme.subtitle1!.merge(TextStyle(letterSpacing: 2,color: Colors.orange,fontWeight: FontWeight.w500)),

@@ -20,6 +20,15 @@ class NewLoginScreen extends StatefulWidget {
 class _NewLoginScreenState extends State<NewLoginScreen> {
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
+  bool _obscureText = true;
+  bool isLoadingButton = true;
+  bool isLoading = false;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -171,7 +180,7 @@ class _NewLoginScreenState extends State<NewLoginScreen> {
                         keyboardType: TextInputType.text,
                         controller: passwordController,
                         style: Get.textTheme.bodyText2,
-                        obscureText: false,
+                        obscureText: _obscureText,
                         textAlign: TextAlign.start,
                         cursorColor: Colors.orange,
                         decoration: Ui.getInputDecoration(
@@ -179,13 +188,13 @@ class _NewLoginScreenState extends State<NewLoginScreen> {
                           iconData: Icons.lock_outline,
                           suffixIcon: IconButton(
                             onPressed: () {
-                              //   controller.hidePassword.value = !controller.hidePassword.value;
+                              _toggle();
                             },
                             color: Colors.grey,
-                            icon: const Icon(Icons.visibility_outlined),
+                            icon: Icon(_obscureText
+                                ? Icons.visibility_off
+                                : Icons.visibility_outlined),
                           ),
-                          // suffix: suffix,
-                          // errorText: errorText,
                         ),
                       ),
                     ],
@@ -205,57 +214,83 @@ class _NewLoginScreenState extends State<NewLoginScreen> {
                     ),
                   ],
                 ).paddingSymmetric(horizontal: 20),
-                BlockButtonWidget(
-                  onPressed: () async {
-                    //  await Get.toNamed(Routes.TECHDASHBOARD,arguments: "admin");
-                    if (emailController.text.toString() == "") {
-                      Fluttertoast.showToast(
-                        msg: "Please Enter Email Address",
-                        toastLength: Toast.LENGTH_SHORT,
-                        gravity: ToastGravity.CENTER,
-                      );
-                    } else if (passwordController.text.toString() == "") {
-                      Fluttertoast.showToast(
-                        msg: "Please Enter Password",
-                        toastLength: Toast.LENGTH_SHORT,
-                        gravity: ToastGravity.CENTER,
-                      );
-                    } else {
-                      ApiInterface()
-                          .loginUser(emailController.text.toString(),
-                              passwordController.text.toString())
-                          .then((value) async {
-                        if (value.response?.status == "success") {
-                          setSessionData(value);
-                          await Get.toNamed(Routes.TECHDASHBOARD,
-                              arguments: "admin");
-                        } else if (value.response?.status ==
-                            "email_not_exists") {
-                          Fluttertoast.showToast(
-                            msg: value.response?.message.toString() ??
-                                "Entered Email Not Exists!",
-                            toastLength: Toast.LENGTH_SHORT,
-                            gravity: ToastGravity.CENTER,
-                          );
-                        } else if (value.response?.status ==
-                            "account_inactive") {
-                          Fluttertoast.showToast(
-                            msg: value.response?.message.toString() ??
-                                "Account is not active! Please contact to your Manufacturer!",
-                            toastLength: Toast.LENGTH_SHORT,
-                            gravity: ToastGravity.CENTER,
-                          );
-                        }
+
+                Container(
+                  width: Get.size.width,
+                  height: 52,
+                  //color: Colors.orange,
+                  decoration: const BoxDecoration(
+                      color: Colors.orange,
+                      borderRadius:
+                      BorderRadius.all(Radius.circular(10))),
+                  child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.transparent,
+                        shadowColor: Colors.transparent),
+                    onPressed: () async {
+                      setState(() {
+                        isLoading = true;
                       });
-                    }
-                  },
-                  color: Colors.orange,
-                  text: Text(
-                    "Login".tr,
-                    style:
-                        Get.textTheme.headline6!.merge(TextStyle(color: page)),
+                      await Future.delayed(const Duration(seconds: 2));
+                      setState(() {
+                        isLoading = false;
+                      });
+                      if (isLoading == false) {
+                        if (emailController.text.toString() == "") {
+                          Fluttertoast.showToast(
+                            msg: "Please Enter Email Address",
+                            toastLength: Toast.LENGTH_SHORT,
+                            gravity: ToastGravity.CENTER,
+                          );
+                        } else if (passwordController.text.toString() == "") {
+                          Fluttertoast.showToast(
+                            msg: "Please Enter Password",
+                            toastLength: Toast.LENGTH_SHORT,
+                            gravity: ToastGravity.CENTER,
+                          );
+                        } else {
+                          ApiInterface()
+                              .loginUser(emailController.text.toString(),
+                              passwordController.text.toString())
+                              .then((value) async {
+                            if (value.response?.status == "success") {
+                              setSessionData(value);
+                              await Get.toNamed(Routes.TECHDASHBOARD,
+                                  arguments: "admin");
+                            } else if (value.response?.status ==
+                                "email_not_exists") {
+                              Fluttertoast.showToast(
+                                msg: value.response?.message.toString() ??
+                                    "Entered Email Not Exists!",
+                                toastLength: Toast.LENGTH_SHORT,
+                                gravity: ToastGravity.CENTER,
+                              );
+                            } else if (value.response?.status ==
+                                "account_inactive") {
+                              Fluttertoast.showToast(
+                                msg: value.response?.message.toString() ??
+                                    "Account is not active! Please contact to your Manufacturer!",
+                                toastLength: Toast.LENGTH_SHORT,
+                                gravity: ToastGravity.CENTER,
+                              );
+                            }
+                          });
+                        }
+                      }
+                    },
+                    child: (isLoading)
+                        ? const SizedBox(
+                        width: 16,
+                        height: 16,
+                        child: CircularProgressIndicator(
+                          color: Colors.white,
+                          strokeWidth: 1.5,
+                        ))
+                        : Text("Login",
+                        style: TextStyle(fontSize: 20,color: Colors.white)),
                   ),
                 ).paddingSymmetric(vertical: 5, horizontal: 20),
+
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -275,5 +310,11 @@ class _NewLoginScreenState extends State<NewLoginScreen> {
         ),
       ),
     );
+  }
+
+  void _toggle() {
+    setState(() {
+      _obscureText = !_obscureText;
+    });
   }
 }

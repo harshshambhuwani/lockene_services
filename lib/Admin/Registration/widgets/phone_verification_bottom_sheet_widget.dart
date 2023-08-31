@@ -9,6 +9,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:service/Admin/new_modified_files/company_module/new_company_view.dart';
 import 'package:service/features/common/ui.dart';
+import 'package:service/network/api_interface.dart';
 import 'package:service/styles/styles.dart';
 
 import '../../../features/bookings/widgets/otp_text_field_widget.dart';
@@ -141,7 +142,7 @@ class _PhoneVerificationBottomSheetWidgetState
             ),
 
             // Coundown(),
-            StartT(),
+            StartT(fullname : widget.fullName,companyName:widget.companyName,emailAddress:widget.emailAddress,passwordValue:widget.passwordValue),
 
             BlockButtonWidget(
               onPressed: () async {
@@ -196,7 +197,15 @@ class _PhoneVerificationBottomSheetWidgetState
 }
 
 class StartT extends StatefulWidget {
-  const StartT({Key? key}) : super(key: key);
+  String? fullname;
+      String? companyName;
+  String? emailAddress;
+      String? passwordValue;
+   StartT({Key? key,
+   this.fullname,
+    this.companyName,
+    this.emailAddress,
+    this.passwordValue}) : super(key: key);
 
   @override
   State<StartT> createState() => _StartTState();
@@ -247,15 +256,29 @@ class _StartTState extends State<StartT> {
               ? Text(
                   'Re-send Otp in $_remainingTime seconds',
                   textAlign: TextAlign.center,
-                  style: Get.textTheme.subtitle1!.merge(TextStyle(
+                  style: Get.textTheme.subtitle1!.merge(const TextStyle(
                       letterSpacing: 2,
                       color: Colors.orange,
                       fontWeight: FontWeight.w500)),
                 ).paddingSymmetric(horizontal: 10, vertical: 10.0)
               : GestureDetector(
                   onTap: () {
-                    resetTimer(); // wait = true;
-                    print("hi");
+                    ApiInterface().sendOtp(
+                        widget.fullname ?? "",
+                        widget.companyName ?? "",
+                        widget.emailAddress ?? "",
+                        widget.passwordValue ?? "").then((value) => {
+                       if(value.status == "1"){
+                        resetTimer(), // wait = true;
+                      Fluttertoast.showToast(
+                      msg: value.message.toString(),
+                      toastLength: Toast.LENGTH_SHORT,
+                      gravity: ToastGravity.CENTER,
+                    )
+                       }
+
+                    });
+                   // print("hi");
                   },
                   child: Text(
                     'Re-send Otp',

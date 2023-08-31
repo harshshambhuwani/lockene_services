@@ -552,14 +552,13 @@ class _OTPDialogState extends State<OTPDialog> {
       TextFieldWidget(
         labelText: "OTP Code".tr,
         hintText: "----  ----  ----  ----  ----  ----".tr,
-        style: Get.textTheme.headline4!.merge(TextStyle(letterSpacing: 6)),
+        style: Get.textTheme.headline4!.merge(const TextStyle(letterSpacing: 6)),
         textAlign: TextAlign.center,
         keyboardType: TextInputType.number,
-        // onChanged: (input) => controller.smsSent.value = input,
       ),
 
       // Coundown(),
-      StartT(),
+       StartT(),
       GestureDetector(
         onTap: (){
           Get.back();
@@ -573,7 +572,7 @@ class _OTPDialogState extends State<OTPDialog> {
           width: Get.width * 1,
           decoration: BoxDecoration(color: Colors.orange,
               borderRadius: BorderRadius.circular(10),
-              boxShadow: [
+              boxShadow: const [
                 BoxShadow(
                     blurRadius:5.0,
                     spreadRadius: 5.0,

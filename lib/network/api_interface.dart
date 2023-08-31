@@ -29,7 +29,6 @@ class ApiInterface{
         var response = await http.Response.fromStream(streamedResponse);
         if (response.statusCode == 200) {
           return LoginModel.fromJson(jsonDecode(response.body));
-
         } else {
           return LoginModel.fromJson(jsonDecode(response.body));
         }
@@ -59,15 +58,18 @@ class ApiInterface{
       try {
         var streamedResponse = await request.send();
         var response = await http.Response.fromStream(streamedResponse);
-        print("fromOtpApiCall ${response.body}");
+        print("fromOtpApiCallss ${response.statusCode}");
+        print("fromOtpApiCallss ${response.body}");
         if (response.statusCode == 200) {
           return OtpModel.fromJson(jsonDecode(response.body));
+        //  return response.body;
 
         } else {
           return OtpModel.fromJson(jsonDecode(response.body));
+         // return response.body;
         }
       } catch (e) {
-        debugPrint("fromCatch $e");
+        debugPrint("fromCatchOtp $e");
       }
       return OtpModel();
     }
@@ -186,7 +188,7 @@ class ApiInterface{
           return RegistrationModel.fromJson(jsonDecode(response.body));
         }
       } catch (e) {
-        debugPrint("fromCatch $e");
+        debugPrint("fromCatchasssss $e");
       }
       return RegistrationModel();
     }
