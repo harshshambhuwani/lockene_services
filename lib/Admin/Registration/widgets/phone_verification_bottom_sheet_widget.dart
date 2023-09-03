@@ -22,7 +22,7 @@ class PhoneVerificationBottomSheetWidget extends StatefulWidget {
   String? companyName;
   String? emailAddress;
   String? passwordValue;
-  int? otpValue;
+  dynamic otpValue;
   PhoneVerificationBottomSheetWidget(
       {Key? key,
       this.fullName,
@@ -146,11 +146,6 @@ class _PhoneVerificationBottomSheetWidgetState
 
             BlockButtonWidget(
               onPressed: () async {
-                // await controller.verifyPhone();
-
-                // // _navigateToAnotherScreen();
-                // Navigator.pop(context);
-                // // Get.offAndToNamed(Routes.COMPANY);
                 if (otpController.text == widget.otpValue.toString()) {
                   showToast("");
                   Get.to(CompanyView(
@@ -278,12 +273,11 @@ class _StartTState extends State<StartT> {
                        }
 
                     });
-                   // print("hi");
-                  },
+                    },
                   child: Text(
                     'Re-send Otp',
                     textAlign: TextAlign.center,
-                    style: Get.textTheme.subtitle1!.merge(TextStyle(
+                    style: Get.textTheme.subtitle1!.merge(const TextStyle(
                         letterSpacing: 2,
                         color: Colors.orange,
                         fontWeight: FontWeight.w500)),

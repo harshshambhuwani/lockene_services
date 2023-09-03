@@ -12,9 +12,14 @@ import '../../technician/service/auth_controller.dart';
 import '../controllers/root_controller.dart';
 
 
+class TechDash extends StatefulWidget {
+  const TechDash({Key? key}) : super(key: key);
 
-class TechDash extends GetView<RootController> {
+  @override
+  State<TechDash> createState() => _TechDashState();
+}
 
+class _TechDashState extends State<TechDash> {
   final arg = Get.arguments;
   // GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   final RootController drawerController = Get.put(RootController());
@@ -36,15 +41,15 @@ class TechDash extends GetView<RootController> {
             }
             return true;
           },
-          child: controller.currentPage,
+          child: drawerController.currentPage,
 
         ),
         bottomNavigationBar: CustomBottomNavigationBar(
           backgroundColor: context.theme.scaffoldBackgroundColor,
           itemColor: context.theme.colorScheme.secondary,
-          currentIndex: controller.currentIndex.value,
+          currentIndex: drawerController.currentIndex.value,
           onChange: (index) {
-            controller.changePage(index);
+            drawerController.changePage(index);
           },
           children: [
             CustomBottomNavigationItem(
@@ -69,3 +74,4 @@ class TechDash extends GetView<RootController> {
     });
   }
 }
+

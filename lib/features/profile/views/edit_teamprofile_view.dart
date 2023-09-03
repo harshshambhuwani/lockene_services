@@ -1,59 +1,70 @@
 import 'dart:io';
-
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/painting.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
-
 import '../../../styles/styles.dart';
 import '../../account/widgets/profile_widget.dart';
 import '../../common/block_button_widget.dart';
 import '../../common/ui.dart';
-import '../controllers/editprofile_controller.dart';
 
-class EditProfileView extends GetView<EditProfileController> {
-  // final bool hideAppBar;
-  //
-  // ProfileView({this.hideAppBar = false}) {
-  //   // controller.profileForm = new GlobalKey<FormState>();
-  // }
+class EditProfileView extends StatefulWidget {
+  String? userName;
+  int? phoneNumber;
+  String? emailAddress;
+  String? userAddress;
+  int? userId;
+  String? userTokenValue;
+
+  EditProfileView(
+      {Key? key,
+      this.userName,
+      this.phoneNumber,
+      this.emailAddress,
+      this.userAddress,
+      this.userId,
+      this.userTokenValue})
+      : super(key: key);
 
   @override
+  State<EditProfileView> createState() => _EditProfileViewState();
+}
+
+class _EditProfileViewState extends State<EditProfileView> {
+  @override
   Widget build(BuildContext context) {
-    controller.profileForm = new GlobalKey<FormState>();
+    //  controller.profileForm = new GlobalKey<FormState>();
     return Scaffold(
         appBar: /*hideAppBar
             ? null
-            :*/ AppBar(
-                title: Text(
-                  "Edit Profile".tr,
-                  style: context.textTheme.subtitle1,
-                ),
-                centerTitle: true,
-                backgroundColor: Colors.transparent,
-                automaticallyImplyLeading: false,
-                leading: new IconButton(
-                  icon: new Icon(Icons.arrow_back_ios, color: Get.theme.hintColor),
-                  onPressed: () => Get.back(),
-                ),
-                elevation: 0,
-              ),
+            :*/
+            AppBar(
+          title: Text(
+            "Edit Profile".tr,
+            style: context.textTheme.subtitle1,
+          ),
+          centerTitle: true,
+          backgroundColor: Colors.transparent,
+          automaticallyImplyLeading: false,
+          leading:  IconButton(
+            icon:  Icon(Icons.arrow_back_ios, color: Get.theme.hintColor),
+            onPressed: () => Get.back(),
+          ),
+          elevation: 0,
+        ),
         body: ListView(
           primary: true,
           children: [
-            Text("Rajat Kumar".tr, style: Get.textTheme.headline5,textAlign:  TextAlign.center,).paddingOnly(top: 25, bottom: 0, right: 22, left: 22),
-
-
-            // SizedBox(height: MediaQuery.of(context).size.height * 0.015,),
-            // ImageUp(),
-
+            Text(
+              widget.userName.toString(),
+              style: Get.textTheme.headline5,
+              textAlign: TextAlign.center,
+            ).paddingOnly(top: 25, bottom: 0, right: 22, left: 22),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 InkWell(
-                  onTap: (){
+                  onTap: () {
                     _bottomsheet(context);
                   },
                   child: Stack(
@@ -80,7 +91,7 @@ class EditProfileView extends GetView<EditProfileController> {
                                 width: 90,
                                 height: 90,
                                 imageUrl:
-                                'https://cdn-icons-png.flaticon.com/512/2482/2482458.png',
+                                    'https://cdn-icons-png.flaticon.com/512/2482/2482458.png',
                                 placeholder: (context, url) => Image.asset(
                                   'assets/img/loading.gif',
                                   fit: BoxFit.cover,
@@ -113,25 +124,24 @@ class EditProfileView extends GetView<EditProfileController> {
                     ],
                   ),
                 ),
-
               ],
             ),
 
-
             Container(
-
-              padding: EdgeInsets.symmetric(horizontal: 20, vertical: 15),
-              margin: EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
+              margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
               decoration: Ui.getBoxDecoration(),
               child: Column(
                 children: [
                   AccountLinkWidget(
                     icon: Icon(Icons.person_outline, color: Colors.orange),
-                    text:
-                    TextFormField(
+                    text: TextFormField(
                       cursorColor: Colors.orange,
-                      initialValue: 'Rajat Kumar',
-                      style: TextStyle( color: Colors.black,fontWeight: FontWeight.w500,fontSize: 14),
+                      initialValue: widget.userName.toString(),
+                      style: TextStyle(
+                          color: Colors.black,
+                          fontWeight: FontWeight.w500,
+                          fontSize: 14),
                       decoration: InputDecoration(
                         isDense: true,
                         contentPadding: EdgeInsets.symmetric(vertical: 5.0),
@@ -152,20 +162,23 @@ class EditProfileView extends GetView<EditProfileController> {
                     },
                   ),
                   AccountLinkWidget(
-                    icon: Icon(Icons.phone_android_outlined, color: Colors.orange),
-                    text:
-                    TextFormField(
+                    icon: const Icon(Icons.phone_android_outlined,
+                        color: Colors.orange),
+                    text: TextFormField(
                       cursorColor: Colors.orange,
-                      initialValue: '9689455261',
+                      initialValue: widget.phoneNumber.toString(),
                       keyboardType: TextInputType.phone,
-                      style: TextStyle( color: Colors.black,fontWeight: FontWeight.w500,fontSize: 14),
+                      style: const TextStyle(
+                          color: Colors.black,
+                          fontWeight: FontWeight.w500,
+                          fontSize: 14),
                       decoration: InputDecoration(
                         isDense: true,
-                        contentPadding: EdgeInsets.symmetric(vertical: 5.0),
+                        contentPadding: const EdgeInsets.symmetric(vertical: 5.0),
                         hintText: 'Mobile Number',
                         hintStyle: TextStyle(fontSize: 14),
                         // labelText: 'Invoice title',
-                        labelStyle: TextStyle(color: Colors.black),
+                        labelStyle: const TextStyle(color: Colors.black),
                         enabledBorder: UnderlineInputBorder(
                           borderSide: BorderSide(color: Colors.grey),
                         ),
@@ -179,19 +192,22 @@ class EditProfileView extends GetView<EditProfileController> {
                     },
                   ),
                   AccountLinkWidget(
-                    icon: Icon(Icons.alternate_email, color: Colors.orange),
+                    icon: const Icon(Icons.alternate_email, color: Colors.orange),
                     text: TextFormField(
                       cursorColor: Colors.orange,
-                      initialValue: 'rajat@gmail.com',
+                      initialValue: widget.emailAddress.toString(),
                       keyboardType: TextInputType.emailAddress,
-                      style: TextStyle( color: Colors.black,fontWeight: FontWeight.w500,fontSize: 14),
+                      style: const TextStyle(
+                          color: Colors.black,
+                          fontWeight: FontWeight.w500,
+                          fontSize: 14),
                       decoration: InputDecoration(
                         isDense: true,
-                        contentPadding: EdgeInsets.symmetric(vertical: 5.0),
+                        contentPadding: const EdgeInsets.symmetric(vertical: 5.0),
                         hintText: 'jhon@gmail.com',
-                        hintStyle: TextStyle(fontSize: 14),
+                        hintStyle: const TextStyle(fontSize: 14),
                         // labelText: 'Invoice title',
-                        labelStyle: TextStyle(color: Colors.black),
+                        labelStyle: const TextStyle(color: Colors.black),
                         enabledBorder: UnderlineInputBorder(
                           borderSide: BorderSide(color: Colors.grey),
                         ),
@@ -206,11 +222,14 @@ class EditProfileView extends GetView<EditProfileController> {
                   ),
                   AccountLinkWidget(
                     icon: Icon(Icons.location_on, color: Colors.orange),
-                    text:TextFormField(
+                    text: TextFormField(
                       cursorColor: Colors.orange,
-                      initialValue: 'Duplex No. 60, Lokhvihar Park,Bhilgaon,Nagpur',
+                      initialValue: widget.userAddress.toString(),
                       keyboardType: TextInputType.emailAddress,
-                      style: TextStyle( color: Colors.black,fontWeight: FontWeight.w500,fontSize: 14),
+                      style: TextStyle(
+                          color: Colors.black,
+                          fontWeight: FontWeight.w500,
+                          fontSize: 14),
                       decoration: InputDecoration(
                         isDense: true,
                         contentPadding: EdgeInsets.symmetric(vertical: 5.0),
@@ -231,256 +250,135 @@ class EditProfileView extends GetView<EditProfileController> {
                       // Get.find<RootController>().changePage(2);
                     },
                   ),
-                  AccountLinkWidget(
-                    icon: Icon(Icons.key, color: Colors.orange),
-                    text:TextFormField(
-                      cursorColor: Colors.orange,
-                      initialValue: 'Rajat123',
-                      // obscureText: controller.hidePassword.value,
-                      keyboardType: TextInputType.visiblePassword,                      style: TextStyle( color: Colors.black,fontWeight: FontWeight.w500,fontSize: 14),
-                      decoration: InputDecoration(
-                        isDense: true,
-                        // contentPadding: EdgeInsets.symmetric(vertical: 5.0),
-                        hintText: "••••••••••••".tr,
-                        hintStyle: TextStyle(fontSize: 14),
-                        // labelText: 'Invoice title',
-                        labelStyle: TextStyle(color: Colors.black),
-                        enabledBorder: UnderlineInputBorder(
-                          borderSide: BorderSide(color: Colors.grey),
-                        ),
-                        focusedBorder: UnderlineInputBorder(
-                          borderSide: BorderSide(color: page),
-                        ),
-                        // suffixIcon: IconButton(
-                        //   onPressed: () {
-                        //     controller.hidePassword.value = !controller.hidePassword.value;
-                        //   },
-                        //   color: Colors.grey,
-                        //   icon: Icon(controller.hidePassword.value ? Icons.visibility_outlined : Icons.visibility_off_outlined),
-                        // ),
-                      ),
-                    ),
-                    /*Text("Duplex No. 60, Lokhvihar Park,Bhilgaon,Nagpur".tr,style: TextStyle( color: Colors.black,fontWeight: FontWeight.w500)),*/
-                    onTap: (e) {
-                      // Get.find<RootController>().changePage(2);
-                    },
-                  ),
-                  AccountLinkWidget(
-                    icon: Icon(Icons.home_outlined, color: Colors.orange),
-                    text:TextFormField(
-                      cursorColor: Colors.orange,
-                      initialValue: 'Bank Of India',
-                      // obscureText: controller.hidePassword.value,
-                      keyboardType: TextInputType.text,                      style: TextStyle( color: Colors.black,fontWeight: FontWeight.w500,fontSize: 14),
-                      decoration: InputDecoration(
-                        isDense: true,
-                        // contentPadding: EdgeInsets.symmetric(vertical: 5.0),
-                        hintText: 'Please enter bank name'.tr,
-                        hintStyle: TextStyle(fontSize: 14),
-                        // labelText: 'Invoice title',
-                        labelStyle: TextStyle(color: Colors.black),
-                        enabledBorder: UnderlineInputBorder(
-                          borderSide: BorderSide(color: Colors.grey),
-                        ),
-                        focusedBorder: UnderlineInputBorder(
-                          borderSide: BorderSide(color: page),
-                        ),
-                        // suffixIcon: IconButton(
-                        //   onPressed: () {
-                        //     controller.hidePassword.value = !controller.hidePassword.value;
-                        //   },
-                        //   color: Colors.grey,
-                        //   icon: Icon(controller.hidePassword.value ? Icons.visibility_outlined : Icons.visibility_off_outlined),
-                        // ),
-                      ),
-                    ),
-                    /*Text("Duplex No. 60, Lokhvihar Park,Bhilgaon,Nagpur".tr,style: TextStyle( color: Colors.black,fontWeight: FontWeight.w500)),*/
-                    onTap: (e) {
-                      // Get.find<RootController>().changePage(2);
-                    },
-                  ),
-                  AccountLinkWidget(
-                    icon: Icon(Icons.numbers_rounded, color: Colors.orange),
-                    text:TextFormField(
-                      cursorColor: Colors.orange,
-                      initialValue: '982450001054',
-                      // obscureText: controller.hidePassword.value,
-                      keyboardType: TextInputType.phone,                      style: TextStyle( color: Colors.black,fontWeight: FontWeight.w500,fontSize: 14),
-                      decoration: InputDecoration(
-                        isDense: true,
-                        // contentPadding: EdgeInsets.symmetric(vertical: 5.0),
-                        hintText: 'Please enter account number'.tr,
-                        hintStyle: TextStyle(fontSize: 14),
-                        // labelText: 'Invoice title',
-                        labelStyle: TextStyle(color: Colors.black),
-                        enabledBorder: UnderlineInputBorder(
-                          borderSide: BorderSide(color: Colors.grey),
-                        ),
-                        focusedBorder: UnderlineInputBorder(
-                          borderSide: BorderSide(color: page),
-                        ),
-                        // suffixIcon: IconButton(
-                        //   onPressed: () {
-                        //     controller.hidePassword.value = !controller.hidePassword.value;
-                        //   },
-                        //   color: Colors.grey,
-                        //   icon: Icon(controller.hidePassword.value ? Icons.visibility_outlined : Icons.visibility_off_outlined),
-                        // ),
-                      ),
-                    ),
-                    /*Text("Duplex No. 60, Lokhvihar Park,Bhilgaon,Nagpur".tr,style: TextStyle( color: Colors.black,fontWeight: FontWeight.w500)),*/
-                    onTap: (e) {
-                      // Get.find<RootController>().changePage(2);
-                    },
-                  ),
-                  AccountLinkWidget(
-                    icon: Icon(Icons.account_circle_outlined, color: Colors.orange),
-                    text:TextFormField(
-                      cursorColor: Colors.orange,
-                      initialValue: 'Rajat Kumar',
-                      // obscureText: controller.hidePassword.value,
-                      keyboardType: TextInputType.text,                      style: TextStyle( color: Colors.black,fontWeight: FontWeight.w500,fontSize: 14),
-                      decoration: InputDecoration(
-                        isDense: true,
-                        // contentPadding: EdgeInsets.symmetric(vertical: 5.0),
-                        hintText: 'Please enter account holder name'.tr,
-                        hintStyle: TextStyle(fontSize: 14),
-                        // labelText: 'Invoice title',
-                        labelStyle: TextStyle(color: Colors.black),
-                        enabledBorder: UnderlineInputBorder(
-                          borderSide: BorderSide(color: Colors.grey),
-                        ),
-                        focusedBorder: UnderlineInputBorder(
-                          borderSide: BorderSide(color: page),
-                        ),
-                        // suffixIcon: IconButton(
-                        //   onPressed: () {
-                        //     controller.hidePassword.value = !controller.hidePassword.value;
-                        //   },
-                        //   color: Colors.grey,
-                        //   icon: Icon(controller.hidePassword.value ? Icons.visibility_outlined : Icons.visibility_off_outlined),
-                        // ),
-                      ),
-                    ),
-                    /*Text("Duplex No. 60, Lokhvihar Park,Bhilgaon,Nagpur".tr,style: TextStyle( color: Colors.black,fontWeight: FontWeight.w500)),*/
-                    onTap: (e) {
-                      // Get.find<RootController>().changePage(2);
-                    },
-                  ),
                 ],
               ),
             ),
 
-
             BlockButtonWidget(
-                text: Stack(
-                  alignment: AlignmentDirectional.center,
-                  children: [
-                    SizedBox(
-                      width: double.infinity,
-                      child: Text(
-                        "Update".tr,
-                        textAlign: TextAlign.center,
-                        style: Get.textTheme.headline6!.merge(
-                          TextStyle(color: page),
+                    text: Stack(
+                      alignment: AlignmentDirectional.center,
+                      children: [
+                        SizedBox(
+                          width: double.infinity,
+                          child: Text(
+                            "Update".tr,
+                            textAlign: TextAlign.center,
+                            style: Get.textTheme.headline6!.merge(
+                              TextStyle(color: page),
+                            ),
+                          ),
                         ),
-                      ),
+                        // Icon(Icons.check, color: page, size: 22)
+                      ],
                     ),
-                    // Icon(Icons.check, color: page, size: 22)
-                  ],
-                ),
-                color: Colors.orange,
-                onPressed: () {
-
-
-
-                }).marginSymmetric(horizontal: 20.0).paddingOnly(bottom: 20),
+                    color: Colors.orange,
+                    onPressed: () {})
+                .marginSymmetric(horizontal: 20.0)
+                .paddingOnly(bottom: 20),
           ],
         ));
   }
 
   void _bottomsheet(BuildContext context) {
     String text;
-    showModalBottomSheet(context: context, isDismissible: true,builder: (context){
-      return Container(
-        color: Color(0xFF737373),
-        height: 120,
-        child: Container(
-          child: Row(
-            // mainAxisSize: MainAxisSize.min,
-            children: [
-              Expanded(
-                  flex: 1,
-                  child: InkWell(
-                    onTap: (){
-                      showDialog(
-                          barrierDismissible: false,
-                          context: context,
-                          builder: (_) {
-                            // return CustomDialog();
-                            return ImageUp(text = "cam");
-                          });
-                      // getcam();
-                    },
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Icon(Icons.camera_enhance_rounded,size: 40,),
-                        SizedBox(height: 10,),
-                        Text('Camera',style: TextStyle(color: Colors.black,fontSize: 16.0,fontWeight: FontWeight.w500),),
-                      ],
-                    ),
-                  )
+    showModalBottomSheet(
+        context: context,
+        isDismissible: true,
+        builder: (context) {
+          return Container(
+            color: Color(0xFF737373),
+            height: 120,
+            child: Container(
+              child: Row(
+                // mainAxisSize: MainAxisSize.min,
+                children: [
+                  Expanded(
+                      flex: 1,
+                      child: InkWell(
+                        onTap: () {
+                          showDialog(
+                              barrierDismissible: false,
+                              context: context,
+                              builder: (_) {
+                                // return CustomDialog();
+                                return ImageUp(text = "cam");
+                              });
+                          // getcam();
+                        },
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Icon(
+                              Icons.camera_enhance_rounded,
+                              size: 40,
+                            ),
+                            SizedBox(
+                              height: 10,
+                            ),
+                            Text(
+                              'Camera',
+                              style: TextStyle(
+                                  color: Colors.black,
+                                  fontSize: 16.0,
+                                  fontWeight: FontWeight.w500),
+                            ),
+                          ],
+                        ),
+                      )),
+                  Expanded(
+                      flex: 1,
+                      child: InkWell(
+                        onTap: () {
+                          showDialog(
+                              barrierDismissible: false,
+                              context: context,
+                              builder: (_) {
+                                return ImageUp(text = "gal");
+                              });
+                          // getgall();
+                          // Navigator.pop(context);
+                        },
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Icon(
+                              Icons.image,
+                              size: 40,
+                            ),
+                            SizedBox(
+                              height: 10,
+                            ),
+                            Text(
+                              'Gallery',
+                              style: TextStyle(
+                                  color: Colors.black,
+                                  fontSize: 16.0,
+                                  fontWeight: FontWeight.w500),
+                            )
+                          ],
+                        ),
+                      )),
+                ],
               ),
-              Expanded(
-                  flex: 1,
-                  child: InkWell(
-                    onTap: (){
-                      showDialog(
-                          barrierDismissible: false,
-                          context: context,
-                          builder: (_) {
-                            return ImageUp(text ="gal");
-                          });
-                      // getgall();
-                      // Navigator.pop(context);
-
-                    },
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Icon(Icons.image,size: 40,),
-                        SizedBox(height: 10,),
-                        Text('Gallery',style: TextStyle(color: Colors.black,fontSize: 16.0,fontWeight: FontWeight.w500),)
-                      ],
-                    ),
-                  )
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(30),
+                  topRight: Radius.circular(30),
+                ),
               ),
 
-            ],
-          ),
-          decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.only(
-              topLeft: Radius.circular(30),
-              topRight: Radius.circular(30),
+              // decoration: BoxDecoration(
+              //   color: Colors.white,
+              //   borderRadius: BorderRadius.only(topRight: Radius.circular(20), topLeft: Radius.circular(20)),
+              //   boxShadow: [
+              //     BoxShadow(color: Get.theme.focusColor.withOpacity(0.4), blurRadius: 30, offset: Offset(0, -30)),
+              //   ],
+              // ),
             ),
-          ),
-
-          // decoration: BoxDecoration(
-          //   color: Colors.white,
-          //   borderRadius: BorderRadius.only(topRight: Radius.circular(20), topLeft: Radius.circular(20)),
-          //   boxShadow: [
-          //     BoxShadow(color: Get.theme.focusColor.withOpacity(0.4), blurRadius: 30, offset: Offset(0, -30)),
-          //   ],
-          // ),
-
-        ),
-      );
-
-    });
+          );
+        });
   }
-
 }
 
 class ImageUp extends StatefulWidget {
@@ -492,16 +390,16 @@ class ImageUp extends StatefulWidget {
 }
 
 class _ImageUpState extends State<ImageUp> {
-
   File? file;
   ImagePicker imagePicker = ImagePicker();
-  getcam() async{
+  getcam() async {
     var img = await imagePicker.getImage(source: ImageSource.camera);
     setState(() {
       file = File(img!.path);
     });
   }
-  getgall() async{
+
+  getgall() async {
     var img = await imagePicker.getImage(source: ImageSource.gallery);
     // wpart = File(img!.path);
     setState(() {
@@ -509,25 +407,19 @@ class _ImageUpState extends State<ImageUp> {
     });
   }
 
-
   @override
   void initState() {
     // TODO: implement initState
     // super.initState();
     print(widget.text.toString());
-    if(widget.text.toString()=="cam"){
-
+    if (widget.text.toString() == "cam") {
       getcam();
       // Navigator.pop(context);
-
-
-    }else if(widget.text.toString()=="gal"){
+    } else if (widget.text.toString() == "gal") {
       getgall();
       // Navigator.pop(context);
-
     }
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -538,100 +430,120 @@ class _ImageUpState extends State<ImageUp> {
         // title: Text('Update Status'),
         content: Container(
           width: size.width * 0.9,
-          child: Column(children: [
-            // Container(
-            //     height: size.width *0.4,
-            //     width: size.width *0.4,
-            //     // child: Lottie.network('https://assets4.lottiefiles.com/packages/lf20_sjeuhlxx.json')
-            //
-            // ),
-            // Text('Registration Successful'.tr,
-            //   style: TextStyle(
-            //       color: Colors.black,fontWeight: FontWeight.w500,fontSize: 20),),
+          child: Column(
+            children: [
+              // Container(
+              //     height: size.width *0.4,
+              //     width: size.width *0.4,
+              //     // child: Lottie.network('https://assets4.lottiefiles.com/packages/lf20_sjeuhlxx.json')
+              //
+              // ),
+              // Text('Registration Successful'.tr,
+              //   style: TextStyle(
+              //       color: Colors.black,fontWeight: FontWeight.w500,fontSize: 20),),
 
-            Column(
-              children: [
-                Padding(
-                  padding: const EdgeInsets.only(bottom: 10.0,left: 20,right: 20,top: 20),
-                  child: Container(
-                      alignment: Alignment.bottomLeft,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text('Profile Photo',style: Get.textTheme.bodyText1,
-                            textAlign: TextAlign.start,),
-                          GestureDetector(
-                            onTap: (){
-                              Navigator.of(context).pop();
-                              Navigator.pop(context);
-                            },
-                            child: Text('Cancel',style: Get.textTheme.bodyText1,
-                              textAlign: TextAlign.start,),
-                          ),
-                        ],
-                      )),
-                ),
-                file == null ? Row(
-                  children: [
-                    GestureDetector(
-                      onTap: (){
-                        // process = "proof";
-                        // _bottomsheet(context,process);
-                      },
-                      child:  Container(
-                        alignment: Alignment.centerLeft,
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.center,
+              Column(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(
+                        bottom: 10.0, left: 20, right: 20, top: 20),
+                    child: Container(
+                        alignment: Alignment.bottomLeft,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Icon(Icons.image,size: 30,),
-                            Text('Add Image',style: TextStyle(fontSize: 14),)
+                            Text(
+                              'Profile Photo',
+                              style: Get.textTheme.bodyText1,
+                              textAlign: TextAlign.start,
+                            ),
+                            GestureDetector(
+                              onTap: () {
+                                Navigator.of(context).pop();
+                                Navigator.pop(context);
+                              },
+                              child: Text(
+                                'Cancel',
+                                style: Get.textTheme.bodyText1,
+                                textAlign: TextAlign.start,
+                              ),
+                            ),
                           ],
-                        ).paddingSymmetric(horizontal: 20,vertical: 20),
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(20),
-                            color: Colors.grey.shade400
+                        )),
+                  ),
+                  file == null
+                      ? Row(
+                          children: [
+                            GestureDetector(
+                              onTap: () {
+                                // process = "proof";
+                                // _bottomsheet(context,process);
+                              },
+                              child: Container(
+                                alignment: Alignment.centerLeft,
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    Icon(
+                                      Icons.image,
+                                      size: 30,
+                                    ),
+                                    Text(
+                                      'Add Image',
+                                      style: TextStyle(fontSize: 14),
+                                    )
+                                  ],
+                                ).paddingSymmetric(
+                                    horizontal: 20, vertical: 20),
+                                decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(20),
+                                    color: Colors.grey.shade400),
+                              ).paddingSymmetric(horizontal: 20),
+                            ),
+                          ],
+                        )
+                      : Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Container(
+                              child: Center(
+                                child: Image.file(
+                                  file!,
+                                  height: 100,
+                                  width: 100,
+                                  fit: BoxFit.cover,
+                                ),
+                              ),
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(20),
+                              ),
+                            ),
+                          ],
                         ),
-                      ).paddingSymmetric(horizontal: 20),
-                    ),
-                  ],
-                ): Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Container(
-                      child: Center(
-                        child:  Image.file(
-                          file!,
-                          height: 100,
-                          width: 100,
-                          fit: BoxFit.cover,
-                        ),
-                      ),
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(20),
-                      ),
-                    ),
-                  ],
-                ),
-              ],
-            ),
-            ElevatedButton(onPressed: (){
-              Navigator.of(context).pop();
-              Navigator.pop(context);
-              // Get.offAndToNamed(Routes.ADLOGIN);
-
-              // Get.back();
-            }
-              , child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 15.0,vertical: 5.0),
-                child: Text('Upload',style: TextStyle(
-                    color: Colors.white,fontWeight: FontWeight.w500,fontSize: 16)),
+                ],
               ),
-              style: ElevatedButton.styleFrom(shape: StadiumBorder(),primary: Colors.orange),
-            ).marginOnly(bottom: 20.0,top: 8.0),
+              ElevatedButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                  Navigator.pop(context);
+                  // Get.offAndToNamed(Routes.ADLOGIN);
 
-          ],),
-        )
-    );
-
+                  // Get.back();
+                },
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(
+                      horizontal: 15.0, vertical: 5.0),
+                  child: Text('Upload',
+                      style: TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.w500,
+                          fontSize: 16)),
+                ),
+                style: ElevatedButton.styleFrom(
+                    shape: StadiumBorder(), primary: Colors.orange),
+              ).marginOnly(bottom: 20.0, top: 8.0),
+            ],
+          ),
+        ));
   }
 }

@@ -5,6 +5,7 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
 import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
 import 'package:service/Admin/AdminLogin/controller/auth_controller.dart';
+import 'package:service/Admin/new_modified_files/forgot_password.dart';
 import '../../../features/common/block_button_widget.dart';
 import '../../../features/common/circular_loading_widget.dart';
 import '../../../features/common/text_field_widget.dart';
@@ -137,15 +138,10 @@ class AdminLogin extends GetView<AuthADController> {
                         children: [
                           TextButton(
                             onPressed: () {
-                              // Navigator.push(
-                              //   context,
-                              //   MaterialPageRoute(
-                              //       builder: (context) => ForgotPasswordView()),
-                              // );
-                              Get.toNamed(Routes.ADFORGOT_PASSWORD);
-                              print("clicked");
-                            },
-                            child: Text("Forgot Password?".tr,style: TextStyle(color: Colors.orange),),
+                              print("fromApiudldld");
+                              // Get.to(FogotPasswordPage());
+                              },
+                            child: Text("Forgot Password?".tr,style: const TextStyle(color: Colors.orange),),
                           ),
                         ],
                       ).paddingSymmetric(horizontal: 20),

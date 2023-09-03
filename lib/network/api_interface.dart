@@ -4,10 +4,12 @@ import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:service/Admin/network/model/costome_service_model.dart';
 import 'package:service/Admin/network/model/country_model.dart';
+import 'package:service/Admin/network/model/get_profile_model.dart';
 import 'package:service/Admin/network/model/login_model.dart';
 import 'package:http/http.dart' as http;
 import 'package:service/Admin/network/model/otp_model.dart';
 import 'package:service/Admin/network/model/registration_model.dart';
+import 'package:service/Admin/network/model/reset_password_model.dart';
 import 'package:service/network/api_path.dart';
 
 class ApiInterface{
@@ -160,9 +162,9 @@ class ApiInterface{
       request.fields['mobile'] = phoneNumber;
       request.fields['email'] = emailAddress!;
       request.fields['address'] = addressText;
-      request.fields['country'] = "101";
-      request.fields['state'] = "4008";
-      request.fields['city'] = "133116";
+      request.fields['country'] = countryValue;
+      request.fields['state'] = stateValue;
+      request.fields['city'] = cityValue;
       request.fields['pincode'] = pinCode;
       request.fields['auth_type'] = "2";
       request.fields['mfr_id'] = "6";
@@ -194,6 +196,110 @@ class ApiInterface{
     }
   }
 
+  Future<ResetPasswodModel> sendPasswordResetLink(
+     String emailAddress) async {
+    var url = ApisPath().postForgotResetLink;
+    var request = http.MultipartRequest('POST', Uri.parse(url));
+    {
+      Map<String, String> headers = {
+        'Client-Service': 'frontend-client',
+        'Auth-Token': '03c9d4f0a012f9403e2dd3b78a95704b1',
+        'Auth-Key': 'ExVfMAc9A8vQcE3zY0',
+      };
+      request.fields['email'] = emailAddress;
+      request.headers.addAll(headers);
+
+      try {
+        var streamedResponse = await request.send();
+        var response = await http.Response.fromStream(streamedResponse);
+        print("ApiCall ${request.fields}");
+        print("fromRegistrationApi ${response.body}");
+        print("fromRegistrationApi ${ApisPath().postForgotResetLink}");
+        if (response.statusCode == 200) {
+          return ResetPasswodModel.fromJson(jsonDecode(response.body));
+
+        } else {
+          return ResetPasswodModel.fromJson(jsonDecode(response.body));
+        }
+      } catch (e) {
+        debugPrint("fromCatchasssss $e");
+      }
+      return ResetPasswodModel();
+    }
+
+  }
+
+
+  // Future<GetProfileModel> getProfileInformation(
+  //     String userToken, String useId) async {
+  //   var url = ApisPath().postGetProfileInfo;
+  //   var request = http.MultipartRequest('POST', Uri.parse("https://mistrichacha.com/tsit/Fsm/viewFsmProfile"));
+  //   {
+  //     Map<String, String> headerssss = {
+  //       'Client-Service': 'frontend-client',
+  //       'Auth-Token': userToken,
+  //     };
+  //     request.fields['user_id'] = "3812";
+  //     request.headers.addAll(headerssss);
+  //
+  //     try {
+  //       var streamedResponse = await request.send();
+  //       var response = await http.Response.fromStream(streamedResponse);
+  //       print("ApiCall ${request.fields}");
+  //       print("getProfileInformation ${response.body}");
+  //       print("getProfileInformation ${ApisPath().postGetProfileInfo}");
+  //       if (response.statusCode == 200) {
+  //         return GetProfileModel.fromJson(jsonDecode(response.body));
+  //
+  //       } else {
+  //         return GetProfileModel.fromJson(jsonDecode(response.body));
+  //       }
+  //     } catch (e) {
+  //       debugPrint("fromCatchasssss $e");
+  //     }
+  //     return GetProfileModel();
+  //   }
+  // }
+
+
+
+  Future<void> getProfileInformation(String userToken, String useId) async {
+    // Define the API endpoint URL
+    final url = Uri.parse("https://mistrichacha.com/tsit/Fsm/viewFsmProfile");
+
+    // Create a FormData object
+    final formData = http.MultipartRequest('POST', url);
+
+    // Add your form fields and files as needed
+    formData.fields.addAll({
+      'user_id':  "3812",
+      '': '',
+    });
+
+    // Add custom headers
+    final headers = <String, String>{
+      'Client-Service': 'frontend-client',
+      'Auth-Token': userToken,
+    };
+    formData.headers.addAll(headers);
+
+    try {
+      // Send the POST request
+      final response = await formData.send();
+
+      // Check the response status code
+      if (response.statusCode == 200) {
+        print('Request successful');
+        // Handle the response data if needed
+        final responseData = await response.stream.bytesToString();
+        print('Response data: $responseData');
+      } else {
+        print('Request failed with status code ${response.statusCode}');
+      }
+    } catch (error) {
+      print('Error: $error');
+    }
+  }
 
 
 

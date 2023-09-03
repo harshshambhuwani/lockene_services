@@ -4,8 +4,11 @@
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_session_manager/flutter_session_manager.dart';
 import 'package:get/get.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
+import 'package:service/Admin/session/session.dart';
+import 'package:service/features/profile/views/profile_view.dart';
 
 import '../../../routes/app_routes.dart';
 import '../../Admin/MyQuote/widgets/booking_actions_widget.dart';
@@ -13,7 +16,28 @@ import '../techniciandashboard/controllers/root_controller.dart';
 import '../techniciandashboard/widget/check_country.dart';
 import 'drawer_link_widget.dart';
 
-class AdminDrawerWidget extends StatelessWidget {
+class AdminDrawerWidget extends StatefulWidget {
+  @override
+  State<AdminDrawerWidget> createState() => _AdminDrawerWidgetState();
+}
+
+class _AdminDrawerWidgetState extends State<AdminDrawerWidget> {
+
+  String name = "";
+  String emailAddress = "";
+  int? phoneNumber;
+  String userAddress = "";
+  int? userId;
+  String userToken = "";
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    getDataFromSession();
+  }
+
+
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
@@ -26,18 +50,19 @@ class AdminDrawerWidget extends StatelessWidget {
                 onTap: () {
                   // Get.find<RootController>().changePageOutRoot(3);
                   Get.back();
-                  Get.toNamed(Routes.PROFILE);
+                 // Get.toNamed(Routes.PROFILE);
+                  Get.to(ProfileView(userName : name.toString(),phoneNumber : phoneNumber,userEmailAddress : emailAddress.toString(),userAddress : userAddress.toString(),userTokenValue : userToken,userIdValue : userId));
 
                 },
                 child: UserAccountsDrawerHeader(
                   decoration: BoxDecoration(
                     color: Colors.grey.shade400,
                   ),
-                  accountName: Text("Rajat M",
+                  accountName: Text(name.toString(),
                     // Get.find<AuthService>().user.value.name!,
                     style: Theme.of(context).textTheme.headline6,
                   ),
-                  accountEmail: Text("rajat@gmail.com",
+                  accountEmail: Text(emailAddress.toString(),
                     /*Get.find<AuthService>().user.value.email!,*/
                     style: Theme.of(context).textTheme.caption,
                   ),
@@ -131,13 +156,6 @@ class AdminDrawerWidget extends StatelessWidget {
               Get.offAndToNamed(Routes.ATTENDENCE);
             },
           ),
-          // DrawerLinkWidget(
-          //   icon: Icons.person_outline_sharp,
-          //   text: "My Providers",
-          //   onTap: (e) {
-          //     // Get.offAndToNamed(Routes.E_PROVIDERS);
-          //   },
-          // ),
           DrawerLinkWidget(
             icon: Icons.person_add_outlined,
             text: "Add Team Member",
@@ -182,18 +200,7 @@ class AdminDrawerWidget extends StatelessWidget {
               // Get.offAndToNamed(Routes.NOTIFICATIONS);
             },
           ),
-          // if (Get.find<AuthService>().user.value.isProvider)
-          //   DrawerLinkWidget(
-          //     icon: Icons.chat_outlined,
-          //     text: "Messages",
-          //     onTap: (e) {
-          //       Get.back();
-          //       // Get.find<RootController>().changePage(2);
-          //     },
-          //   ),
-          // if (Get.find<AuthService>().user.value.isProvider)
-          //   if (Get.find<SettingsService>().setting.value.modules!.contains("Subscription"))
-              ListTile(
+          ListTile(
                 dense: true,
                 title: Text(
                   "Report & Reviews".tr,
@@ -223,15 +230,13 @@ class AdminDrawerWidget extends StatelessWidget {
                   // Get.offAndToNamed(Routes.PACKAGES);
                 },
               ),
-          // if (Get.find<AuthService>().user.value.isProvider)
-          //   if (Get.find<SettingsService>().setting.value.modules!.contains("Subscription"))
-              DrawerLinkWidget(
+
+          DrawerLinkWidget(
                 icon: Icons.account_circle_outlined,
                 text: "My Profile",
                 onTap: (e) async {
-                  // await Get.offAndToNamed(Routes.WALLETS);
                   Get.back();
-                  Get.toNamed(Routes.PROFILE);
+                  Get.to(ProfileView(userName : name.toString(),phoneNumber : phoneNumber,userEmailAddress : emailAddress.toString(),userAddress : userAddress.toString(),userTokenValue : userToken,userIdValue : userId));
                 },
               ),
               DrawerLinkWidget(
@@ -342,5 +347,60 @@ class AdminDrawerWidget extends StatelessWidget {
     );
   }
 
+  void getDataFromSession() {
+    getUserToken().then((value) => {
+      setState((){
+        userToken = value.toString();
+      }),
+    });
+    getUserId().then((value) => {
+      userId = value,
+      setState((){
+        userId = value;
+      }),
+    });
+    getUsername().then((value) => {
+      name = value.toString(),
+      setState((){
+        name = value.toString();
+      }),
+    });
+    getPhoneNumber().then((value) => {
+      phoneNumber = value,
+      setState((){
+        phoneNumber = value;
+      }),
+    });
+    getUserAddress().then((value) => {
+      setState((){
+        userAddress = value.toString();
+        //   pri
+      }),
+    });
+    getEmailAddress().then((value) => {
+      setState((){
+        emailAddress = value.toString();
+        //   pri
+      }),
+    });
+  }
 
+  Future<String> getUserToken() async {
+    return await SessionManager().get(SessionDataKey().tspLoginToken);
+  }
+  Future<int> getUserId() async {
+    return await SessionManager().get(SessionDataKey().userId);
+  }
+  Future<String> getUsername() async {
+    return await SessionManager().get(SessionDataKey().displayName);
+  }
+  Future<int> getPhoneNumber() async {
+    return await SessionManager().get(SessionDataKey().tspContactNumber);
+  }
+  Future<String> getUserAddress() async {
+    return await SessionManager().get(SessionDataKey().tspDetailedAddress);
+  }
+  Future<String> getEmailAddress() async {
+    return await SessionManager().get(SessionDataKey().tspEmail);
+  }
 }

@@ -5,12 +5,12 @@ class LoginModel {
 
   LoginModel.fromJson(Map<String, dynamic> json) {
     response = json['response'] != null
-        ? new Response.fromJson(json['response'])
+        ?  Response.fromJson(json['response'])
         : null;
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
+    final Map<String, dynamic> data =  Map<String, dynamic>();
     if (this.response != null) {
       data['response'] = this.response!.toJson();
     }
@@ -273,70 +273,70 @@ class User {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['mfr_id'] = this.mfrId;
-    data['tsp_referral_code'] = this.tspReferralCode;
-    data['tsp_referral_id'] = this.tspReferralId;
-    data['tsp_fname'] = this.tspFname;
-    data['tsp_lname'] = this.tspLname;
-    data['tsp_contact_number'] = this.tspContactNumber;
-    data['tsp_password'] = this.tspPassword;
-    data['tsp_business_name'] = this.tspBusinessName;
-    data['tsp_email'] = this.tspEmail;
-    data['tsp_detailed_address'] = this.tspDetailedAddress;
-    data['tsp_profile_image'] = this.tspProfileImage;
-    data['tsp_otp'] = this.tspOtp;
-    data['tsp_timezone'] = this.tspTimezone;
-    data['tsp_abbreviation'] = this.tspAbbreviation;
-    data['tsp_country'] = this.tspCountry;
-    data['tsp_state'] = this.tspState;
-    data['tsp_city'] = this.tspCity;
-    data['tsp_pincode'] = this.tspPincode;
-    data['tsp_partner_type'] = this.tspPartnerType;
-    data['tsp_partner_authority'] = this.tspPartnerAuthority;
-    data['tsp_avg_rating'] = this.tspAvgRating;
-    data['tsp_visiting_charge'] = this.tspVisitingCharge;
-    data['tsp_bank_id'] = this.tspBankId;
-    data['tsp_account_name'] = this.tspAccountName;
-    data['tsp_ifsc_code'] = this.tspIfscCode;
-    data['tsp_account_number'] = this.tspAccountNumber;
-    data['tsp_fcm'] = this.tspFcm;
-    data['tsp_device_id'] = this.tspDeviceId;
-    data['tsp_make_model'] = this.tspMakeModel;
-    data['tsp_platform'] = this.tspPlatform;
-    data['tsp_login_token'] = this.tspLoginToken;
-    data['tsp_app_version'] = this.tspAppVersion;
-    data['tsp_created_date'] = this.tspCreatedDate;
-    data['tsp_modified_date'] = this.tspModifiedDate;
-    data['tsp_sms_of_approval'] = this.tspSmsOfApproval;
-    data['tsp_is_active'] = this.tspIsActive;
-    data['tsp_is_approved'] = this.tspIsApproved;
-    data['tsp_is_deleted'] = this.tspIsDeleted;
-    data['gst_details'] = this.gstDetails;
-    data['total_referral_earnings'] = this.totalReferralEarnings;
-    data['total_due'] = this.totalDue;
-    data['total_received'] = this.totalReceived;
-    data['tsp_google_address'] = this.tspGoogleAddress;
-    data['tsp_latitude'] = this.tspLatitude;
-    data['tsp_longitude'] = this.tspLongitude;
-    data['is_verified'] = this.isVerified;
-    data['is_alert_sent'] = this.isAlertSent;
-    data['updated_by'] = this.updatedBy;
-    data['assign_work'] = this.assignWork;
-    data['amc_support'] = this.amcSupport;
-    data['sp_pan_number'] = this.spPanNumber;
-    data['zip_from'] = this.zipFrom;
-    data['zip_to'] = this.zipTo;
-    data['mfr_name'] = this.mfrName;
-    data['currency_symbol'] = this.currencySymbol;
-    data['currency_name'] = this.currencyName;
-    data['country_name'] = this.countryName;
-    data['state_name'] = this.stateName;
-    data['city_name'] = this.cityName;
-    data['tb_bank_name'] = this.tbBankName;
-    data['convinience_percentage'] = this.conviniencePercentage;
-    data['gst_percentage'] = this.gstPercentage;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['mfr_id'] = mfrId;
+    data['tsp_referral_code'] = tspReferralCode;
+    data['tsp_referral_id'] = tspReferralId;
+    data['tsp_fname'] = tspFname;
+    data['tsp_lname'] = tspLname;
+    data['tsp_contact_number'] = tspContactNumber;
+    data['tsp_password'] = tspPassword;
+    data['tsp_business_name'] = tspBusinessName;
+    data['tsp_email'] = tspEmail;
+    data['tsp_detailed_address'] = tspDetailedAddress;
+    data['tsp_profile_image'] = tspProfileImage;
+    data['tsp_otp'] = tspOtp;
+    data['tsp_timezone'] = tspTimezone;
+    data['tsp_abbreviation'] = tspAbbreviation;
+    data['tsp_country'] = tspCountry;
+    data['tsp_state'] = tspState;
+    data['tsp_city'] = tspCity;
+    data['tsp_pincode'] = tspPincode;
+    data['tsp_partner_type'] = tspPartnerType;
+    data['tsp_partner_authority'] = tspPartnerAuthority;
+    data['tsp_avg_rating'] = tspAvgRating;
+    data['tsp_visiting_charge'] = tspVisitingCharge;
+    data['tsp_bank_id'] = tspBankId;
+    data['tsp_account_name'] = tspAccountName;
+    data['tsp_ifsc_code'] = tspIfscCode;
+    data['tsp_account_number'] = tspAccountNumber;
+    data['tsp_fcm'] = tspFcm;
+    data['tsp_device_id'] = tspDeviceId;
+    data['tsp_make_model'] = tspMakeModel;
+    data['tsp_platform'] = tspPlatform;
+    data['tsp_login_token'] = tspLoginToken;
+    data['tsp_app_version'] = tspAppVersion;
+    data['tsp_created_date'] = tspCreatedDate;
+    data['tsp_modified_date'] = tspModifiedDate;
+    data['tsp_sms_of_approval'] = tspSmsOfApproval;
+    data['tsp_is_active'] = tspIsActive;
+    data['tsp_is_approved'] = tspIsApproved;
+    data['tsp_is_deleted'] = tspIsDeleted;
+    data['gst_details'] = gstDetails;
+    data['total_referral_earnings'] = totalReferralEarnings;
+    data['total_due'] = totalDue;
+    data['total_received'] = totalReceived;
+    data['tsp_google_address'] = tspGoogleAddress;
+    data['tsp_latitude'] = tspLatitude;
+    data['tsp_longitude'] = tspLongitude;
+    data['is_verified'] = isVerified;
+    data['is_alert_sent'] = isAlertSent;
+    data['updated_by'] = updatedBy;
+    data['assign_work'] = assignWork;
+    data['amc_support'] = amcSupport;
+    data['sp_pan_number'] = spPanNumber;
+    data['zip_from'] = zipFrom;
+    data['zip_to'] = zipTo;
+    data['mfr_name'] = mfrName;
+    data['currency_symbol'] = currencySymbol;
+    data['currency_name'] = currencyName;
+    data['country_name'] = countryName;
+    data['state_name'] = stateName;
+    data['city_name'] = cityName;
+    data['tb_bank_name'] = tbBankName;
+    data['convinience_percentage'] = conviniencePercentage;
+    data['gst_percentage'] = gstPercentage;
     return data;
   }
 }

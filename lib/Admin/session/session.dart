@@ -71,6 +71,7 @@ import 'package:service/Admin/network/model/login_model.dart';
 
 class SessionData {
   var isLogin = false;
+  var useId = "";
   var displayName = "";
   var referralCode = "";
   var tspContactNumber = "";
@@ -85,10 +86,12 @@ class SessionData {
   var tspCountryName = "";
   var tspStateName = "";
   var tspCityName = "";
+  var tspLoginToken = "";
 }
 
 class SessionDataKey {
   var isLogin = "isLogin";
+  var userId = "id";
   var displayName = "tsp_fname";
   var lastName = "tsp_lname";
   var referralCode = "tsp_referral_code";
@@ -104,27 +107,29 @@ class SessionDataKey {
   var tspCountryName = "country_name";
   var tspStateName = "state_name";
   var tspCityName = "city_name";
+  var tspLoginToken = "tsp_login_token";
 
 }
 
 Future<void> setSessionData(LoginModel response) async {
-
   await SessionManager().set(SessionDataKey().isLogin, true);
+  await SessionManager().set(SessionDataKey().userId, response.response?.data?.user?[0].id);
   await SessionManager().set(SessionDataKey().displayName, response.response?.data?.user?[0].tspFname);
   await SessionManager().set(SessionDataKey().lastName, response.response?.data?.user?[0].tspLname);
-  await SessionManager().set(SessionDataKey().referralCode, response.response?.data?.user?[0].tspLname);
-  await SessionManager().set(SessionDataKey().tspContactNumber, response.response?.data?.user?[0].tspLname);
-  await SessionManager().set(SessionDataKey().tspBussinessName, response.response?.data?.user?[0].tspLname);
-  await SessionManager().set(SessionDataKey().tspEmail, response.response?.data?.user?[0].tspLname);
-  await SessionManager().set(SessionDataKey().tspDetailedAddress, response.response?.data?.user?[0].tspLname);
-  await SessionManager().set(SessionDataKey().tspProfileImage, response.response?.data?.user?[0].tspLname);
-  await SessionManager().set(SessionDataKey().tspTimeZone, response.response?.data?.user?[0].tspLname);
-  await SessionManager().set(SessionDataKey().tspAbbrevation, response.response?.data?.user?[0].tspLname);
-  await SessionManager().set(SessionDataKey().tspMfrName, response.response?.data?.user?[0].tspLname);
-  await SessionManager().set(SessionDataKey().tspCurrencySymbol, response.response?.data?.user?[0].tspLname);
-  await SessionManager().set(SessionDataKey().tspCountryName, response.response?.data?.user?[0].tspLname);
-  await SessionManager().set(SessionDataKey().tspStateName, response.response?.data?.user?[0].tspLname);
-  await SessionManager().set(SessionDataKey().tspCityName, response.response?.data?.user?[0].tspLname);
+  await SessionManager().set(SessionDataKey().referralCode, response.response?.data?.user?[0].tspReferralCode);
+  await SessionManager().set(SessionDataKey().tspContactNumber, response.response?.data?.user?[0].tspContactNumber);
+  await SessionManager().set(SessionDataKey().tspBussinessName, response.response?.data?.user?[0].tspBusinessName);
+  await SessionManager().set(SessionDataKey().tspEmail, response.response?.data?.user?[0].tspEmail);
+  await SessionManager().set(SessionDataKey().tspDetailedAddress, response.response?.data?.user?[0].tspDetailedAddress);
+  await SessionManager().set(SessionDataKey().tspProfileImage, response.response?.data?.user?[0].tspProfileImage);
+  await SessionManager().set(SessionDataKey().tspTimeZone, response.response?.data?.user?[0].tspTimezone);
+  await SessionManager().set(SessionDataKey().tspAbbrevation, response.response?.data?.user?[0].tspAbbreviation);
+  await SessionManager().set(SessionDataKey().tspMfrName, response.response?.data?.user?[0].mfrName);
+  await SessionManager().set(SessionDataKey().tspCurrencySymbol, response.response?.data?.user?[0].currencySymbol);
+  await SessionManager().set(SessionDataKey().tspCountryName, response.response?.data?.user?[0].countryName);
+  await SessionManager().set(SessionDataKey().tspStateName, response.response?.data?.user?[0].stateName);
+  await SessionManager().set(SessionDataKey().tspCityName, response.response?.data?.user?[0].cityName);
+  await SessionManager().set(SessionDataKey().tspLoginToken, response.response?.data?.user?[0].tspLoginToken);
 
 
 }

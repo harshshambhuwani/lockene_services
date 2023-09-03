@@ -56,7 +56,7 @@ class RootController extends GetxController {
   List<Widget> pages = [
     HomeView(),
     ReviewsView(),
-    AccountView(),
+    const AccountView(),
   ];
 
   Widget get currentPage => pages[currentIndex.value];

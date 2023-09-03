@@ -97,6 +97,8 @@ dependencies:
   flutter_session_manager:
   dropdown_search: ^1.0.0-beta2
   csc_picker: ^0.2.7
+  flutter_native_timezone: ^2.0.0
+
 #  toggle_switch: ^2.0.1
 #  contacts_service: ^0.4.6
   #for generating hive_adapter

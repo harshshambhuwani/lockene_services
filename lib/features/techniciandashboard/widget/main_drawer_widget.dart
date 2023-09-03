@@ -5,6 +5,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:service/features/profile/views/profile_view.dart';
 
 
 import '../../../routes/app_routes.dart';
@@ -98,7 +99,8 @@ class MainDrawerWidget extends StatelessWidget {
                 onTap: () {
                   // Get.find<RootController>().changePageOutRoot(3);
                   Get.back();
-                  Get.toNamed(Routes.PROFILE);
+                 // Get.toNamed(Routes.PROFILE);
+                 // Get.to(ProfileView(userName : name.toString(),phoneNumber : phoneNumber,userEmailAddress : emailAddress.toString(),userAddress : userAddress.toString(),userTokenValue : userToken,userIdValue : userId));
 
                 },
                 child: UserAccountsDrawerHeader(
@@ -131,7 +133,7 @@ class MainDrawerWidget extends StatelessWidget {
                               width: double.infinity,
                               height: 80,
                             ),
-                            errorWidget: (context, url, error) => Icon(Icons.error_outline),
+                            errorWidget: (context, url, error) => const Icon(Icons.error_outline),
                           ),
                         ),
                       ),

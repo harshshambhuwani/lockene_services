@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:service/Admin/new_modified_files/forgot_password.dart';
 import 'package:service/Admin/new_modified_files/registration_module/new_registration_screen.dart';
 import 'package:service/Admin/session/session.dart';
 import 'package:service/features/common/block_button_widget.dart';
@@ -11,7 +12,8 @@ import 'package:get/get.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
 class NewLoginScreen extends StatefulWidget {
-  const NewLoginScreen({Key? key}) : super(key: key);
+  String? localTimeZoneValue;
+  NewLoginScreen({Key? key, this.localTimeZoneValue}) : super(key: key);
 
   @override
   State<NewLoginScreen> createState() => _NewLoginScreenState();
@@ -28,6 +30,7 @@ class _NewLoginScreenState extends State<NewLoginScreen> {
   void initState() {
     // TODO: implement initState
     super.initState();
+    print("fromLoginScree ${widget.localTimeZoneValue}");
   }
 
   @override
@@ -205,7 +208,8 @@ class _NewLoginScreenState extends State<NewLoginScreen> {
                   children: [
                     TextButton(
                       onPressed: () {
-                        Get.toNamed(Routes.ADFORGOT_PASSWORD);
+                        //  Get.toNamed(Routes.ADFORGOT_PASSWORD);
+                        Get.to(FogotPasswordPage());
                       },
                       child: Text(
                         "Forgot Password?".tr,
@@ -214,15 +218,13 @@ class _NewLoginScreenState extends State<NewLoginScreen> {
                     ),
                   ],
                 ).paddingSymmetric(horizontal: 20),
-
                 Container(
                   width: Get.size.width,
                   height: 52,
                   //color: Colors.orange,
                   decoration: const BoxDecoration(
                       color: Colors.orange,
-                      borderRadius:
-                      BorderRadius.all(Radius.circular(10))),
+                      borderRadius: BorderRadius.all(Radius.circular(10))),
                   child: ElevatedButton(
                     style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.transparent,
@@ -237,24 +239,21 @@ class _NewLoginScreenState extends State<NewLoginScreen> {
                       });
                       if (isLoading == false) {
                         if (emailController.text.toString() == "") {
-                          Fluttertoast.showToast(
-                            msg: "Please Enter Email Address",
-                            toastLength: Toast.LENGTH_SHORT,
-                            gravity: ToastGravity.CENTER,
-                          );
+                          showToast("Please Enter Email Address");
+                        } else if (!validateMailField(
+                            emailController.text.toString())) {
+                          showToast("Email is Incorrect");
                         } else if (passwordController.text.toString() == "") {
-                          Fluttertoast.showToast(
-                            msg: "Please Enter Password",
-                            toastLength: Toast.LENGTH_SHORT,
-                            gravity: ToastGravity.CENTER,
-                          );
+                          showToast("Please Enter Password");
                         } else {
                           ApiInterface()
                               .loginUser(emailController.text.toString(),
-                              passwordController.text.toString())
+                                  passwordController.text.toString())
                               .then((value) async {
                             if (value.response?.status == "success") {
                               setSessionData(value);
+                              print(
+                                  "fromDsdddaadadUseeee ${value.response?.data?.user![0].id}");
                               await Get.toNamed(Routes.TECHDASHBOARD,
                                   arguments: "admin");
                             } else if (value.response?.status ==
@@ -280,24 +279,24 @@ class _NewLoginScreenState extends State<NewLoginScreen> {
                     },
                     child: (isLoading)
                         ? const SizedBox(
-                        width: 16,
-                        height: 16,
-                        child: CircularProgressIndicator(
-                          color: Colors.white,
-                          strokeWidth: 1.5,
-                        ))
-                        : Text("Login",
-                        style: TextStyle(fontSize: 20,color: Colors.white)),
+                            width: 16,
+                            height: 16,
+                            child: CircularProgressIndicator(
+                              color: Colors.white,
+                              strokeWidth: 1.5,
+                            ))
+                        : const Text("Login",
+                            style:
+                                TextStyle(fontSize: 20, color: Colors.white)),
                   ),
                 ).paddingSymmetric(vertical: 5, horizontal: 20),
-
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     TextButton(
                       onPressed: () {
                         // Get.toNamed(Routes.REGISTER);
-                        Get.to(const NewRegistrationScreen());
+                        Get.to(NewRegistrationScreen());
                       },
                       child: Text("You don't have an account? Sign-Up".tr,
                           style: const TextStyle(color: Colors.orange)),
@@ -316,5 +315,20 @@ class _NewLoginScreenState extends State<NewLoginScreen> {
     setState(() {
       _obscureText = !_obscureText;
     });
+  }
+
+  void showToast(String message) {
+    Fluttertoast.showToast(
+        msg: message,
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.BOTTOM);
+  }
+
+  bool validateMailField(String userInput) {
+    if (!RegExp(r'\S+@\S+\.\S+').hasMatch(userInput)) {
+      return false;
+    } else {
+      return true;
+    }
   }
 }
