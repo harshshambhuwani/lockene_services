@@ -5,6 +5,7 @@ import 'package:service/Admin/AddMember/controller/addsuccess_controller.dart';
 
 
 import 'package:service/features/profile/widgets/phone_field_widget.dart';
+import 'package:service/network/api_interface.dart';
 
 import '../../../features/common/block_button_widget.dart';
 import '../../../features/common/circular_loading_widget.dart';
@@ -12,12 +13,42 @@ import '../../../features/common/text_field_widget.dart';
 import '../../../features/common/ui.dart';
 import '../../../routes/app_routes.dart';
 import '../../../styles/styles.dart';
+import '../../network/model/get_client_list_model.dart';
 import '../controller/addclient_controller.dart';
 import '../controller/allclient_controller.dart';
 
 
 
-class AllClientView extends GetView<AllClientsController>{
+class AllClientView extends StatefulWidget {
+  const AllClientView({Key? key}) : super(key: key);
+
+  @override
+  State<AllClientView> createState() => _AllClientViewState();
+}
+
+class _AllClientViewState extends State<AllClientView> {
+
+  List<Data>? data;
+  bool isLoading = true;
+  String countryValue = "";
+  String stateValue = "";
+  String cityValue = "";
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    ApiInterface().getClientList().then((value) => {
+          print("fromApigetClientList ${value.status}"),
+      if(value.status == "1"){
+        data = value.data,
+        setState((){
+          isLoading = false;
+    }),
+      }
+    });
+  }
+
 
 
   @override
@@ -40,8 +71,7 @@ class AllClientView extends GetView<AllClientsController>{
       body: ListView(
         children: [
           buildSearchBar(),
-
-          Container(
+          SizedBox(
               height: 50,
               child: ElevatedButton(
                   style: ElevatedButton.styleFrom(
@@ -50,149 +80,46 @@ class AllClientView extends GetView<AllClientsController>{
                   onPressed: () {
                     Get.toNamed(Routes.ADD_CLIENT,arguments: "add");
                   },
-                  child: Text('Create New Client',
+                  child: const Text('Create New Client',
                       style:
                       TextStyle(color: Colors.orange, fontSize: 16))))
               .paddingOnly(right: 20.0, left: 20.0, bottom: 10.0),
 
           Text('My Clients are ...'.tr,
             style: Get.textTheme.subtitle2!,).marginSymmetric(horizontal: 20.0),
-          // SearchServicesListWidget(/*services: controller.eServices*/),
-          GestureDetector(
-            onTap: (){
-              // Get.back();
+          isLoading ? const Center(child: CircularProgressIndicator()) :SizedBox(
+          height:  Get.size.height,
+            child: ListView.builder(
+            itemCount: data?.length,
+            physics: const NeverScrollableScrollPhysics(),
+            itemBuilder: (BuildContext context, int index) {
+              return  Container(
+                height: 80,
+                decoration: Ui.getBoxDecoration(),
+                child: Row(
+                  children: [
+                    const Expanded(
+                        flex: 2,
+                        child: Icon(Icons.person,color: Colors.orange,size: 30,)),
+                    Expanded(
+                        flex: 6,
+                        child: Container(
+                          alignment: Alignment.topLeft,
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(data?[index].tcCustName ?? "",style:Get.textTheme.subtitle2!,),
+                              Text(data?[index].tcPhoneNumber ?? "",style: TextStyle(color: Colors.grey.shade600),),
 
-              // Get.toNamed(Routes.ADD_QUOTE,arguments: "back");
-              Get.offAndToNamed(Routes.ADD_QUOTE,arguments: "back");
-
-            },
-            child: Container(
-              height: 80,
-              decoration: Ui.getBoxDecoration(),
-              child: Row(
-                children: [
-                  Expanded(
-                      flex:2,
-                      child: Icon(Icons.person,color: Colors.orange,size: 30,)),
-                  Expanded(
-                      flex: 6,
-                      child: Container(
-                        alignment: Alignment.topLeft,
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text('Ankush Thengne',style:Get.textTheme.subtitle2!,),
-                            Text('9850111244',style: TextStyle(color: Colors.grey.shade600),),
-
-                          ],
-                        ),
-                      )),
-                  // Expanded(
-                  //     flex: 2,
-                  //     child: Row(
-                  //       mainAxisAlignment: MainAxisAlignment.center,
-                  //
-                  //       children: [
-                  //         Text('Active'),
-                  //         Container(
-                  //           height: 8,
-                  //           width: 8,
-                  //           decoration: BoxDecoration(
-                  //               color: Colors.green,
-                  //               borderRadius: BorderRadius.circular(5.0)
-                  //           ),
-                  //         ).marginOnly(left: 5.0),
-                  //       ],
-                  //     )),
-                ],
-              ),
-            ).marginOnly(left: 20.0,right: 20.0,top: 10),
-          ),
-          Container(
-            height: 80,
-            decoration: Ui.getBoxDecoration(),
-            child: Row(
-              children: [
-                Expanded(
-                    flex: 2,
-                    child: Icon(Icons.person,color: Colors.orange,size: 30,)),
-                Expanded(
-                    flex: 6,
-                    child: Container(
-                      alignment: Alignment.topLeft,
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text('Santosh Thengne',style:Get.textTheme.subtitle2!,),
-                          Text('8210132383',style: TextStyle(color: Colors.grey.shade600),),
-
-                        ],
-                      ),
-                    )),
-                // Expanded(
-                //     flex: 2,
-                //     child: Row(
-                //       mainAxisAlignment: MainAxisAlignment.center,
-                //
-                //       children: [
-                //
-                //         Text('Active'),
-                //         Container(
-                //           height: 8,
-                //           width: 8,
-                //           decoration: BoxDecoration(
-                //               color: Colors.green,
-                //               borderRadius: BorderRadius.circular(5.0)
-                //           ),
-                //         ).marginOnly(left: 5.0),
-                //       ],
-                //     )),
-              ],
-            ),
-          ).marginOnly(left: 20.0,right: 20.0,top: 5),
-          Container(
-            height: 80,
-            decoration: Ui.getBoxDecoration(),
-            child: Row(
-              children: [
-                Expanded(
-                    flex: 2,
-                    child: Icon(Icons.person,color: Colors.orange,size: 30,)),
-                Expanded(
-                    flex: 6,
-                    child: Container(
-                      alignment: Alignment.topLeft,
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text('Sanket Fulzele',style:Get.textTheme.subtitle2!,),
-                          Text('9689455261',style: TextStyle(color: Colors.grey.shade600),),
-
-                        ],
-                      ),
-                    )),
-                // Expanded(
-                //     flex: 2,
-                //     child: Row(
-                //       mainAxisAlignment: MainAxisAlignment.center,
-                //       children: [
-                //         Text('In-active'),
-                //         Container(
-                //           height: 8,
-                //           width: 8,
-                //           decoration: BoxDecoration(
-                //               color: Colors.green,
-                //               borderRadius: BorderRadius.circular(5.0)
-                //           ),
-                //         ).marginOnly(left: 5.0),
-                //       ],
-                //     )),
-              ],
-            ),
-          ).marginOnly(left: 20.0,right: 20.0,top: 5),
+                            ],
+                          ),
+                        )),
+                  ],
+                ),
+              ).marginOnly(left: 20.0,right: 20.0,top: 5);
+            }),
+        ),
         ],
       ),
     );
@@ -268,6 +195,7 @@ class AllClientView extends GetView<AllClientsController>{
     );
   }
 }
+
 
 
 

@@ -1,8 +1,8 @@
 class OtpModel {
-  dynamic status;
-  dynamic message;
-  dynamic data;
-  dynamic otp;
+  String? status;
+  String? message;
+  int? data;
+  int? otp;
 
   OtpModel({this.status, this.message, this.data, this.otp});
 
@@ -13,9 +13,9 @@ class OtpModel {
     otp = json['otp'];
   }
 
-  Map<dynamic, dynamic> toJson() {
-    final Map<dynamic, dynamic> data = <dynamic, dynamic>{};
-    data['Status'] = status;
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['status'] = status;
     data['message'] = message;
     data['data'] = data;
     data['otp'] = otp;

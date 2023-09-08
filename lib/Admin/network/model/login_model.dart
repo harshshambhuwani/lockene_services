@@ -1,11 +1,11 @@
 class LoginModel {
-  Response? response;
+  LoginResponse? response;
 
   LoginModel({this.response});
 
   LoginModel.fromJson(Map<String, dynamic> json) {
     response = json['response'] != null
-        ?  Response.fromJson(json['response'])
+        ?  LoginResponse.fromJson(json['response'])
         : null;
   }
 
@@ -18,21 +18,21 @@ class LoginModel {
   }
 }
 
-class Response {
+class LoginResponse {
   String? status;
   String? message;
   String? conviniencePercentage;
   String? gstPercentage;
   Data? data;
 
-  Response(
+  LoginResponse(
       {this.status,
         this.message,
         this.conviniencePercentage,
         this.gstPercentage,
         this.data});
 
-  Response.fromJson(Map<String, dynamic> json) {
+  LoginResponse.fromJson(Map<String, dynamic> json) {
     status = json['status'];
     message = json['message'];
     conviniencePercentage = json['convinience_percentage'];

@@ -1,11 +1,11 @@
 class RegistrationModel {
-  Response? response;
+  RegisterResponse? response;
 
   RegistrationModel({this.response});
 
   RegistrationModel.fromJson(Map<String, dynamic> json) {
     response = json['response'] != null
-        ? new Response.fromJson(json['response'])
+        ? new RegisterResponse.fromJson(json['response'])
         : null;
   }
 
@@ -18,14 +18,14 @@ class RegistrationModel {
   }
 }
 
-class Response {
+class RegisterResponse {
   String? status;
   String? message;
   Data? data;
 
-  Response({this.status, this.message, this.data});
+  RegisterResponse({this.status, this.message, this.data});
 
-  Response.fromJson(Map<String, dynamic> json) {
+  RegisterResponse.fromJson(Map<String, dynamic> json) {
     status = json['status'];
     message = json['message'];
     data = json['data'] != null ? new Data.fromJson(json['data']) : null;

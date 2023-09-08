@@ -1,8 +1,12 @@
 import 'dart:io';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_session_manager/flutter_session_manager.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:service/Admin/session/session.dart';
+import 'package:service/network/api_interface.dart';
 import '../../../styles/styles.dart';
 import '../../account/widgets/profile_widget.dart';
 import '../../common/block_button_widget.dart';
@@ -31,6 +35,28 @@ class EditProfileView extends StatefulWidget {
 }
 
 class _EditProfileViewState extends State<EditProfileView> {
+
+  TextEditingController fullNameController = TextEditingController();
+  TextEditingController mobileNumberController = TextEditingController();
+  TextEditingController emailController = TextEditingController();
+  TextEditingController addressController = TextEditingController();
+  String userToken = "";
+  int? userId;
+
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    fullNameController.text = widget.userName.toString();
+    mobileNumberController.text = widget.phoneNumber.toString();
+    emailController.text = widget.emailAddress.toString();
+    addressController.text = widget.userAddress.toString();
+    getTokenFromSession();
+  }
+
+
+
   @override
   Widget build(BuildContext context) {
     //  controller.profileForm = new GlobalKey<FormState>();
@@ -137,7 +163,8 @@ class _EditProfileViewState extends State<EditProfileView> {
                     icon: Icon(Icons.person_outline, color: Colors.orange),
                     text: TextFormField(
                       cursorColor: Colors.orange,
-                      initialValue: widget.userName.toString(),
+                      //initialValue: widget.userName.toString(),
+                      controller: fullNameController,
                       style: TextStyle(
                           color: Colors.black,
                           fontWeight: FontWeight.w500,
@@ -166,7 +193,8 @@ class _EditProfileViewState extends State<EditProfileView> {
                         color: Colors.orange),
                     text: TextFormField(
                       cursorColor: Colors.orange,
-                      initialValue: widget.phoneNumber.toString(),
+                      controller: mobileNumberController,
+                     // initialValue: widget.phoneNumber.toString(),
                       keyboardType: TextInputType.phone,
                       style: const TextStyle(
                           color: Colors.black,
@@ -195,7 +223,8 @@ class _EditProfileViewState extends State<EditProfileView> {
                     icon: const Icon(Icons.alternate_email, color: Colors.orange),
                     text: TextFormField(
                       cursorColor: Colors.orange,
-                      initialValue: widget.emailAddress.toString(),
+                      controller: emailController,
+                     // initialValue: widget.emailAddress.toString(),
                       keyboardType: TextInputType.emailAddress,
                       style: const TextStyle(
                           color: Colors.black,
@@ -221,23 +250,24 @@ class _EditProfileViewState extends State<EditProfileView> {
                     },
                   ),
                   AccountLinkWidget(
-                    icon: Icon(Icons.location_on, color: Colors.orange),
+                    icon: const Icon(Icons.location_on, color: Colors.orange),
                     text: TextFormField(
                       cursorColor: Colors.orange,
-                      initialValue: widget.userAddress.toString(),
+                      controller: addressController,
+                    //  initialValue: widget.userAddress.toString(),
                       keyboardType: TextInputType.emailAddress,
-                      style: TextStyle(
+                      style: const TextStyle(
                           color: Colors.black,
                           fontWeight: FontWeight.w500,
                           fontSize: 14),
                       decoration: InputDecoration(
                         isDense: true,
-                        contentPadding: EdgeInsets.symmetric(vertical: 5.0),
+                        contentPadding: const EdgeInsets.symmetric(vertical: 5.0),
                         hintText: 'Full Address',
-                        hintStyle: TextStyle(fontSize: 14),
+                        hintStyle: const TextStyle(fontSize: 14),
                         // labelText: 'Invoice title',
-                        labelStyle: TextStyle(color: Colors.black),
-                        enabledBorder: UnderlineInputBorder(
+                        labelStyle: const TextStyle(color: Colors.black),
+                        enabledBorder: const UnderlineInputBorder(
                           borderSide: BorderSide(color: Colors.grey),
                         ),
                         focusedBorder: UnderlineInputBorder(
@@ -245,7 +275,6 @@ class _EditProfileViewState extends State<EditProfileView> {
                         ),
                       ),
                     ),
-                    /*Text("Duplex No. 60, Lokhvihar Park,Bhilgaon,Nagpur".tr,style: TextStyle( color: Colors.black,fontWeight: FontWeight.w500)),*/
                     onTap: (e) {
                       // Get.find<RootController>().changePage(2);
                     },
@@ -272,7 +301,35 @@ class _EditProfileViewState extends State<EditProfileView> {
                       ],
                     ),
                     color: Colors.orange,
-                    onPressed: () {})
+                    onPressed: () {
+                      print("fromOnTap");
+                      if(fullNameController.text == ""){
+                        showToast("Please enter the full name");
+                      }else if(mobileNumberController.text == ""){
+                        showToast("Please enter mobile");
+                      }else if(emailController.text == ""){
+                        showToast("Please enter your email address");
+                      } else if (!validateMailField(
+                          emailController.text.toString())) {
+                        showToast("Email is Incorrect");
+                      }else if(addressController.text == ""){
+                        showToast("Address is Empty");
+                      }else {
+                        ApiInterface().updateProfileInformation(userToken,fullNameController.text,mobileNumberController.text,emailController.text,addressController.text,userId.toString());
+                        //     .then((value) => {
+                        //   if(value.status == "1"){
+                        //     showToast(value.message.toString()),
+                        //   }else{
+                        //     showToast("Something went wrong"),
+                        //   }
+                        //  // print("fromApiInter $value"),
+                        // });
+                      }
+
+
+
+
+                    })
                 .marginSymmetric(horizontal: 20.0)
                 .paddingOnly(bottom: 20),
           ],
@@ -378,6 +435,44 @@ class _EditProfileViewState extends State<EditProfileView> {
             ),
           );
         });
+  }
+
+  void getTokenFromSession() {
+    getUserToken().then((value) => {
+      setState(() {
+        userToken = value.toString();
+      }),
+    });
+    getUserId().then((value) => {
+      setState(() {
+        userId = value;
+        print("fromUseRID ${userId}");
+      }),
+    });
+
+  }
+
+  Future<String> getUserToken() async {
+    return await SessionManager().get(SessionDataKey().tspLoginToken);
+  }
+  Future<int> getUserId() async {
+    return await SessionManager().get(SessionDataKey().userId);
+  }
+
+  void showToast(String message) {
+    Fluttertoast.showToast(
+      msg: message,
+      toastLength: Toast.LENGTH_SHORT,
+      gravity: ToastGravity.CENTER,
+    );
+  }
+
+  bool validateMailField(String userInput) {
+    if (!RegExp(r'\S+@\S+\.\S+').hasMatch(userInput)) {
+      return false;
+    } else {
+      return true;
+    }
   }
 }
 

@@ -16,7 +16,7 @@ class TextFieldWidget extends StatelessWidget {
     this.onChanged,
     this.validator,
     this.keyboardType,
-    this.initialValue,
+   // this.initialValue,
     this.hintText,
     this.errorText,
     this.iconData,
@@ -35,7 +35,7 @@ class TextFieldWidget extends StatelessWidget {
   final ValueChanged<String>? onChanged;
   final FormFieldValidator<String>? validator;
   final TextInputType? keyboardType;
-  final String? initialValue;
+ // final String? initialValue;
   final String? hintText;
   final String? errorText;
   final TextAlign? textAlign;
@@ -77,7 +77,7 @@ class TextFieldWidget extends StatelessWidget {
             onSaved: onSaved,
             onChanged: onChanged,
             validator: validator,
-            initialValue: initialValue ?? '',
+            //initialValue: initialValue ?? '',
             style: style ?? Get.textTheme.bodyText2,
             obscureText: obscureText ?? false,
             textAlign: textAlign ?? TextAlign.start,

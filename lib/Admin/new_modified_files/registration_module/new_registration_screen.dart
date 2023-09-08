@@ -296,6 +296,7 @@ class _NewRegistrationScreenState extends State<NewRegistrationScreen> {
                             emailAddressController.text.toString(),
                             passwordController.text.toString())
                         .then((value) => {
+                          print("fromSendOtp ${value.status}"),
                               if (value.status == "1")
                                 {
                                   showToast(value.message.toString()),

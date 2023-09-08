@@ -1,18 +1,21 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:service/Admin/network/model/costome_service_model.dart';
 import 'package:service/Admin/network/model/country_model.dart';
+import 'package:service/Admin/network/model/get_client_list_model.dart';
 import 'package:service/Admin/network/model/get_profile_model.dart';
 import 'package:service/Admin/network/model/login_model.dart';
 import 'package:http/http.dart' as http;
 import 'package:service/Admin/network/model/otp_model.dart';
 import 'package:service/Admin/network/model/registration_model.dart';
 import 'package:service/Admin/network/model/reset_password_model.dart';
+import 'package:service/Admin/network/model/update_profile_model.dart';
 import 'package:service/network/api_path.dart';
 
-class ApiInterface{
+class ApiInterface {
   Future<LoginModel> loginUser(String username, String password) async {
     var url = ApisPath().postLogin;
     var request = http.MultipartRequest('POST', Uri.parse(url));
@@ -41,8 +44,8 @@ class ApiInterface{
     }
   }
 
-
-  Future<OtpModel> sendOtp(String fullName, String companyName, String emailAddress, String password) async {
+  Future<OtpModel> sendOtp(String fullName, String companyName,
+      String emailAddress, String password) async {
     var url = ApisPath().postOtp;
     var request = http.MultipartRequest('POST', Uri.parse(url));
     {
@@ -64,11 +67,10 @@ class ApiInterface{
         print("fromOtpApiCallss ${response.body}");
         if (response.statusCode == 200) {
           return OtpModel.fromJson(jsonDecode(response.body));
-        //  return response.body;
-
+          //  return response.body;
         } else {
           return OtpModel.fromJson(jsonDecode(response.body));
-         // return response.body;
+          // return response.body;
         }
       } catch (e) {
         debugPrint("fromCatchOtp $e");
@@ -76,9 +78,6 @@ class ApiInterface{
       return OtpModel();
     }
   }
-
-
-
 
   Future<CountryModel> getCountry() async {
     var url = ApisPath().postCountry;
@@ -96,7 +95,6 @@ class ApiInterface{
         var response = await http.Response.fromStream(streamedResponse);
         if (response.statusCode == 200) {
           return CountryModel.fromJson(jsonDecode(response.body));
-
         } else {
           return CountryModel.fromJson(jsonDecode(response.body));
         }
@@ -107,8 +105,6 @@ class ApiInterface{
     }
   }
 
-
-
   Future<CostomeServiceModel> getCostomeServiceList() async {
     Map<String, String> headers = {
       'Auth-Key': 'ExVfMAc9A8vQcE3zY0',
@@ -116,9 +112,9 @@ class ApiInterface{
     };
     try {
       final response = await http.post(
-          Uri.parse(ApisPath().postGetCostomeServiceList),
-          headers: headers,
-         );
+        Uri.parse(ApisPath().postGetCostomeServiceList),
+        headers: headers,
+      );
       if (response.statusCode == 200) {
         return CostomeServiceModel.fromJson(jsonDecode(response.body));
       } else if (response.statusCode == 404) {
@@ -133,9 +129,6 @@ class ApiInterface{
       return CostomeServiceModel();
     }
   }
-
-
-
 
   Future<RegistrationModel> registerPrivateFsm(
       String? fullName,
@@ -185,7 +178,6 @@ class ApiInterface{
         print("fromRegistrationApi ${response.body}");
         if (response.statusCode == 200) {
           return RegistrationModel.fromJson(jsonDecode(response.body));
-
         } else {
           return RegistrationModel.fromJson(jsonDecode(response.body));
         }
@@ -196,8 +188,7 @@ class ApiInterface{
     }
   }
 
-  Future<ResetPasswodModel> sendPasswordResetLink(
-     String emailAddress) async {
+  Future<ResetPasswodModel> sendPasswordResetLink(String emailAddress) async {
     var url = ApisPath().postForgotResetLink;
     var request = http.MultipartRequest('POST', Uri.parse(url));
     {
@@ -217,7 +208,6 @@ class ApiInterface{
         print("fromRegistrationApi ${ApisPath().postForgotResetLink}");
         if (response.statusCode == 200) {
           return ResetPasswodModel.fromJson(jsonDecode(response.body));
-
         } else {
           return ResetPasswodModel.fromJson(jsonDecode(response.body));
         }
@@ -226,9 +216,7 @@ class ApiInterface{
       }
       return ResetPasswodModel();
     }
-
   }
-
 
   // Future<GetProfileModel> getProfileInformation(
   //     String userToken, String useId) async {
@@ -261,8 +249,6 @@ class ApiInterface{
   //   }
   // }
 
-
-
   Future<void> getProfileInformation(String userToken, String useId) async {
     // Define the API endpoint URL
     final url = Uri.parse("https://mistrichacha.com/tsit/Fsm/viewFsmProfile");
@@ -272,7 +258,7 @@ class ApiInterface{
 
     // Add your form fields and files as needed
     formData.fields.addAll({
-      'user_id':  "3812",
+      'user_id': "3812",
       '': '',
     });
 
@@ -301,8 +287,90 @@ class ApiInterface{
     }
   }
 
+  Future<UpdateProfileModel> updateProfileInformation(
+      String authToken, String fullName, String mobileNumber, String emailAddress, String addressText, String userId,) async {
+    var url = ApisPath().updateProfileInfo;
+    print("fromUpdateApi ${authToken}");
+    var request = http.MultipartRequest('POST', Uri.parse(url));
+    {
 
+      request.fields['tsp_id'] = userId;
+      request.fields['email'] = emailAddress;
+      request.fields['name'] = fullName;
+      request.fields['number'] = mobileNumber;
+      request.fields['address'] = addressText;
+      request.fields['country'] = "India";
+      request.fields['state'] = "Maharastra";
+      request.fields['city'] = "Nagpur";
+      request.fields['zipcode'] = "440030";
+      // int contentLength = 196;
+      // print("fromApiccldlcontentLengthd $contentLength");
+      Map<String, String> headers = {
+        'Client-Service': 'frontend-client',
+        'Auth-Token': "1f0684243e0fa74fe3e77f4e1fbf88a2",
+        'Content-Type': "multipart/form-data; boundary=<calculated when request is sent>",
+      };
+      request.headers.addAll(headers);
+      try {
+        var streamedResponse = await request.send();
+        var response = await http.Response.fromStream(streamedResponse);
+        print("ApiCall ${request.fields}");
+        print("updateProfileInformation ${response.body}");
+        print("updateProfileInformation ${response.statusCode}");
+        print("updateProfileInformation ${ApisPath().updateProfileInfo}");
+        if (response.statusCode == 200) {
+          return UpdateProfileModel.fromJson(jsonDecode(response.body));
+
+        } else {
+          return UpdateProfileModel.fromJson(jsonDecode(response.body));
+        }
+      } catch (e) {
+        debugPrint("fromCatchasssssfromRegistrationApi $e");
+      }
+      return UpdateProfileModel();
+    }
+
+  }
+
+
+
+  Future<GetClientListData> getClientList() async {
+    var url = ApisPath().getClientListData;
+    var request = http.MultipartRequest('POST', Uri.parse(url));
+    {
+
+      request.fields['sp_id'] = "3812";
+
+      Map<String, String> headers = {
+        'Client-Service': 'frontend-client',
+        'Auth-Key': "ExVfMAc9A8vQcE3zY0",
+      };
+      request.headers.addAll(headers);
+      try {
+        var streamedResponse = await request.send();
+        var response = await http.Response.fromStream(streamedResponse);
+        print("ApiCall ${request.fields}");
+        print("updateProfileInformation ${response.body}");
+        print("updateProfileInformation ${response.statusCode}");
+        print("updateProfileInformation ${ApisPath().updateProfileInfo}");
+        if (response.statusCode == 200) {
+          return GetClientListData.fromJson(jsonDecode(response.body));
+
+        } else {
+          return GetClientListData.fromJson(jsonDecode(response.body));
+        }
+      } catch (e) {
+       // debugPrint("fromCatchasssssfromRegistrationApi $e");
+      }
+      return GetClientListData();
+    }
+
+  }
 
 
 
 }
+
+
+
+
