@@ -1,13 +1,10 @@
 import 'dart:convert';
 import 'dart:io';
-
-import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:service/Admin/network/model/add_client.dart';
 import 'package:service/Admin/network/model/costome_service_model.dart';
 import 'package:service/Admin/network/model/country_model.dart';
 import 'package:service/Admin/network/model/get_client_list_model.dart';
-import 'package:service/Admin/network/model/get_profile_model.dart';
 import 'package:service/Admin/network/model/line_list_model.dart';
 import 'package:service/Admin/network/model/login_model.dart';
 import 'package:http/http.dart' as http;
