@@ -8,6 +8,8 @@ String forgotResetLink = "tsit/Fsm/FsmForgetPassword";
 String getProfileInfo = "tsit/Fsm/getFsmProfileDetails";
 String updateProfile = "tsit/Fsm/UpdateFsmProfile";
 String getClientList = "tsit/Fsm/getClientList";
+String addClient = "tsit/Fsm/addClientRequest";
+String getLineList = "tsit/Fsm/getLineItemList";
 
 class ApisPath {
   String postLogin = baseUrl + loginApiUrl;
@@ -19,5 +21,7 @@ class ApisPath {
   String postGetProfileInfo = baseUrl + getProfileInfo;
   String updateProfileInfo = baseUrl + updateProfile;
   String getClientListData = baseUrl + getClientList;
+  String postAddClientToDb = baseUrl + addClient;
+  String postGetLineList = baseUrl + getLineList;
 }
 

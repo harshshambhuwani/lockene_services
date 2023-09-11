@@ -28,7 +28,7 @@ class PhoneFieldWidget extends StatelessWidget {
       this.suffix,
       this.initialCountryCode,
       this.maxlength,
-      this.countries})
+      this.countries,  this.controller})
       : super(key: key);
 
   final FormFieldSetter<PhoneNumber>? onSaved;
@@ -47,6 +47,7 @@ class PhoneFieldWidget extends StatelessWidget {
   final bool? isLast;
   final Widget? suffixIcon;
   final Widget? suffix;
+  final TextEditingController? controller;
 
   @override
   Widget build(BuildContext context) {
@@ -83,6 +84,7 @@ class PhoneFieldWidget extends StatelessWidget {
               style: style ?? Get.textTheme.bodyText2,
               textAlign: textAlign ?? TextAlign.start,
               disableLengthCheck: true,
+              controller: controller,
               autovalidateMode: AutovalidateMode.disabled,
               decoration: InputDecoration(
                 hintText: hintText ?? '',

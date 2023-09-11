@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:service/Admin/AddMember/controller/addsuccess_controller.dart';
-
+import 'package:service/Admin/AddQuote/screen/addquote_view.dart';
 
 import 'package:service/features/profile/widgets/phone_field_widget.dart';
 import 'package:service/network/api_interface.dart';
@@ -17,8 +17,6 @@ import '../../network/model/get_client_list_model.dart';
 import '../controller/addclient_controller.dart';
 import '../controller/allclient_controller.dart';
 
-
-
 class AllClientView extends StatefulWidget {
   const AllClientView({Key? key}) : super(key: key);
 
@@ -27,7 +25,6 @@ class AllClientView extends StatefulWidget {
 }
 
 class _AllClientViewState extends State<AllClientView> {
-
   List<Data>? data;
   bool isLoading = true;
   String countryValue = "";
@@ -39,17 +36,15 @@ class _AllClientViewState extends State<AllClientView> {
     // TODO: implement initState
     super.initState();
     ApiInterface().getClientList().then((value) => {
-          print("fromApigetClientList ${value.status}"),
-      if(value.status == "1"){
-        data = value.data,
-        setState((){
-          isLoading = false;
-    }),
-      }
-    });
+          if (value.status == "1")
+            {
+              data = value.data,
+              setState(() {
+                isLoading = false;
+              }),
+            }
+        });
   }
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -57,69 +52,120 @@ class _AllClientViewState extends State<AllClientView> {
       appBar: AppBar(
         title: Text(
           "All Clients".tr,
-          style: Get.textTheme.subtitle1!.merge(TextStyle(fontWeight: FontWeight.w500)),
+          style: Get.textTheme.subtitle1!
+              .merge(TextStyle(fontWeight: FontWeight.w500)),
         ),
         centerTitle: true,
         backgroundColor: Colors.transparent,
         automaticallyImplyLeading: false,
-        leading: new IconButton(
+        leading: IconButton(
           icon: new Icon(Icons.arrow_back_ios, color: Get.theme.hintColor),
           onPressed: () => Get.back(),
         ),
         elevation: 0,
       ),
       body: ListView(
+        physics: const NeverScrollableScrollPhysics(),
+        shrinkWrap: true,
         children: [
           buildSearchBar(),
           SizedBox(
-              height: 50,
-              child: ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    primary: Colors.white, // Background color
-                  ),
-                  onPressed: () {
-                    Get.toNamed(Routes.ADD_CLIENT,arguments: "add");
-                  },
-                  child: const Text('Create New Client',
-                      style:
-                      TextStyle(color: Colors.orange, fontSize: 16))))
+                  height: 50,
+                  child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        primary: Colors.white, // Background color
+                      ),
+                      onPressed: () {
+                        Get.toNamed(Routes.ADD_CLIENT, arguments: "add");
+                      },
+                      child: const Text('Create New Client',
+                          style:
+                              TextStyle(color: Colors.orange, fontSize: 16))))
               .paddingOnly(right: 20.0, left: 20.0, bottom: 10.0),
-
-          Text('My Clients are ...'.tr,
-            style: Get.textTheme.subtitle2!,).marginSymmetric(horizontal: 20.0),
-          isLoading ? const Center(child: CircularProgressIndicator()) :SizedBox(
-          height:  Get.size.height,
-            child: ListView.builder(
-            itemCount: data?.length,
-            physics: const NeverScrollableScrollPhysics(),
-            itemBuilder: (BuildContext context, int index) {
-              return  Container(
-                height: 80,
-                decoration: Ui.getBoxDecoration(),
-                child: Row(
-                  children: [
-                    const Expanded(
-                        flex: 2,
-                        child: Icon(Icons.person,color: Colors.orange,size: 30,)),
-                    Expanded(
-                        flex: 6,
-                        child: Container(
-                          alignment: Alignment.topLeft,
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(data?[index].tcCustName ?? "",style:Get.textTheme.subtitle2!,),
-                              Text(data?[index].tcPhoneNumber ?? "",style: TextStyle(color: Colors.grey.shade600),),
-
-                            ],
-                          ),
-                        )),
-                  ],
+          Text(
+            'My Clients are ...'.tr,
+            style: Get.textTheme.subtitle2!,
+          ).marginSymmetric(horizontal: 20.0),
+          isLoading
+              ? const Center(child: CircularProgressIndicator())
+              : SizedBox(
+                  height: 600,
+                  child: SingleChildScrollView(
+                    physics: const AlwaysScrollableScrollPhysics(),
+                    child: ListView.builder(
+                        itemCount: data?.length,
+                        scrollDirection: Axis.vertical,
+                        shrinkWrap: true,
+                        physics: const NeverScrollableScrollPhysics(),
+                        itemBuilder: (BuildContext context, int index) {
+                          return SingleChildScrollView(
+                            child: GestureDetector(
+                              onTap: () {
+                                // String? tcCustName;
+                                // String? tcCustEmail;
+                                // String? tcPhoneNumber;
+                                // String? tcCountry;
+                                // String? tcState;
+                                // String? tcCity;
+                                // String? tcPincode;
+                                // String? tcAddress;
+                                // String? customerGoogleAddress;
+                                // String? countryName;
+                                // String? stateName;
+                                // String? cityName;
+                                Get.to(AddQuoteView(
+                                    clientName: data?[index].tcCustName,
+                                    clientPhone: data?[index].tcPhoneNumber,
+                                    clientCity: data?[index].cityName,
+                                clientEmail : data?[index].tcCustEmail));
+                              },
+                              child: Container(
+                                height: 80,
+                                decoration: Ui.getBoxDecoration(),
+                                child: Row(
+                                  children: [
+                                    const Expanded(
+                                        flex: 2,
+                                        child: Icon(
+                                          Icons.person,
+                                          color: Colors.orange,
+                                          size: 30,
+                                        )),
+                                    Expanded(
+                                        flex: 6,
+                                        child: Container(
+                                          alignment: Alignment.topLeft,
+                                          child: Column(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              Text(
+                                                data?[index].tcCustName ?? "",
+                                                style: Get.textTheme.subtitle2!,
+                                              ),
+                                              Text(
+                                                data?[index].tcPhoneNumber ??
+                                                    "",
+                                                style: TextStyle(
+                                                    color:
+                                                        Colors.grey.shade600),
+                                              ),
+                                            ],
+                                          ),
+                                        )),
+                                  ],
+                                ),
+                              ).marginOnly(left: 20.0, right: 20.0, top: 5),
+                            ),
+                          );
+                        }),
+                  ),
                 ),
-              ).marginOnly(left: 20.0,right: 20.0,top: 5);
-            }),
-        ),
+          const SizedBox(
+            height: 120,
+          )
         ],
       ),
     );
@@ -154,7 +200,8 @@ class _AllClientViewState extends State<AllClientView> {
                   },
                   autofocus: true,
                   cursorColor: Get.theme.focusColor,
-                  decoration: Ui.getInputDecoration(hintText: "Search for member...".tr),
+                  decoration: Ui.getInputDecoration(
+                      hintText: "Search for member...".tr),
                 ),
               ),
             ),
@@ -195,8 +242,3 @@ class _AllClientViewState extends State<AllClientView> {
     );
   }
 }
-
-
-
-
-

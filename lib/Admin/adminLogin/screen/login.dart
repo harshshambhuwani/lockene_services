@@ -147,7 +147,7 @@ class AdminLogin extends GetView<AuthADController> {
                       ).paddingSymmetric(horizontal: 20),
                       BlockButtonWidget(
                 onPressed: () async {
-                await Get.toNamed(Routes.TECHDASHBOARD,arguments: "admin");
+                     await Get.toNamed(Routes.TECHDASHBOARD,arguments: "admin");
 
                 },
                         // {

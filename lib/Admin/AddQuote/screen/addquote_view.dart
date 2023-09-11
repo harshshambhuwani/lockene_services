@@ -10,15 +10,25 @@ import '../controller/addquote_controller.dart';
 
 
 
-class AddQuoteView extends GetView<AddQuoteController>{
+class AddQuoteView extends StatefulWidget {
+  String? clientName;
+  String? clientPhone;
+  String? clientCity;
+  String? clientEmail;
+   AddQuoteView({Key? key, this.clientName, this.clientPhone, this.clientCity, this.clientEmail}) : super(key: key);
 
+  @override
+  State<AddQuoteView> createState() => _AddQuoteViewState();
+}
+
+class _AddQuoteViewState extends State<AddQuoteView> {
   final arg = Get.arguments;
 
 
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
-    controller.loginFormKey = new GlobalKey<FormState>();
+   // controller.loginFormKey = new GlobalKey<FormState>();
 
     return SafeArea(
       child: Scaffold(
@@ -66,10 +76,10 @@ class AddQuoteView extends GetView<AddQuoteController>{
                   ],
                 ).paddingSymmetric(horizontal: 20.0,vertical: 20.0)
                     :Column(
-                      children: [
-                        Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
                         Row(children: [
                           Icon(Icons.person,size: 27,),
                           Text('Ankush Thengne',
@@ -78,24 +88,61 @@ class AddQuoteView extends GetView<AddQuoteController>{
                           ).paddingOnly(left: 10.0)
                         ],),
                         Icon(Icons.edit_outlined,size: 25,color: Colors.black,)
-                  ],
-                ),
-                        Row(children: [
-                          Icon(Icons.call,size: 27,color: Colors.grey.shade600),
-                          Text('9850111244',
-                            style: Get.textTheme.subtitle1!.merge(TextStyle(fontWeight: FontWeight.w500,color: Colors.grey.shade600)),
-
-                          ).paddingOnly(left: 10.0)
-                        ],).paddingOnly(top: 5.0),
-
                       ],
-                    ).paddingSymmetric(horizontal: 20.0,vertical: 20.0),
+                    ),
+                    Row(children: [
+                      Icon(Icons.call,size: 27,color: Colors.grey.shade600),
+                      Text('9850111244',
+                        style: Get.textTheme.subtitle1!.merge(TextStyle(fontWeight: FontWeight.w500,color: Colors.grey.shade600)),
+
+                      ).paddingOnly(left: 10.0)
+                    ],).paddingOnly(top: 5.0),
+
+                  ],
+                ).paddingSymmetric(horizontal: 20.0,vertical: 20.0),
 
               ),
             ),
+
             Text('Overview',
               style: Get.textTheme.subtitle1!.merge(TextStyle(fontWeight: FontWeight.w500,color: Colors.grey.shade600)),
             ).paddingSymmetric(horizontal: 20.0,vertical: 15.0),
+            Column(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Row(children: [
+                        const Icon(Icons.person_outline_sharp,size: 27,),
+                        Text(widget.clientName.toString(),
+                          style: Get.textTheme.subtitle1!.merge(const TextStyle(fontWeight: FontWeight.w500,color: Colors.black)),
+
+                        ).paddingOnly(left: 10.0)
+                      ],),
+                      const Icon(Icons.arrow_forward_ios_outlined,size: 14,color: Colors.orange,)
+                    ],
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Row(children: [
+                        const Icon(Icons.home,size: 27,),
+                        Text(widget.clientCity.toString(),
+                          style: Get.textTheme.subtitle1!.merge(TextStyle(fontWeight: FontWeight.w500,color: Colors.black)),
+
+                        ).paddingOnly(left: 10.0)
+                      ],),
+                      Icon(Icons.arrow_forward_ios_outlined,size: 14,color: Colors.orange,)
+                    ],
+                  ),
+                ),
+              ],
+            ),
             Container(
               // height: size.height * 0.08,
               color: Colors.white,
@@ -103,7 +150,7 @@ class AddQuoteView extends GetView<AddQuoteController>{
                 decoration: InputDecoration(
                   hintText: 'Job title',
                   labelText: 'Job title',
-                  labelStyle: TextStyle(color: Colors.black),
+                  labelStyle: const TextStyle(color: Colors.black),
                   enabledBorder: UnderlineInputBorder(
                     borderSide: BorderSide(color: theme1),
                   ),
@@ -122,7 +169,7 @@ class AddQuoteView extends GetView<AddQuoteController>{
 
               },
               child: arg.toString()!="back1"?
-            Container(
+              Container(
                 // height: size.height * 0.08,
                 color: Colors.white,
                 child: Row(
@@ -228,7 +275,7 @@ class AddQuoteView extends GetView<AddQuoteController>{
                     Text(
                       'Discount',
                       style: Get.textTheme.subtitle1!.merge(TextStyle(
-                           color: Colors.black)),
+                          color: Colors.black)),
                     ),
                     Text(
                       '₹ 0.00',
@@ -256,7 +303,7 @@ class AddQuoteView extends GetView<AddQuoteController>{
                     Text(
                       'Tax',
                       style: Get.textTheme.subtitle1!.merge(TextStyle(
-                           color: Colors.black)),
+                          color: Colors.black)),
                     ),
                     Text(
                       '₹ 0.00',
@@ -360,6 +407,7 @@ class AddQuoteView extends GetView<AddQuoteController>{
     );
   }
 }
+
 
 class GetHours extends StatefulWidget {
   const GetHours({Key? key}) : super(key: key);

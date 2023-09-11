@@ -84,7 +84,7 @@ class _MySplashScreenState extends State<MySplashScreen> {
                     height: media.height * 0.02,
                   ),
                   Text(
-                    'Powered & Developed By Trickysys IT Solutions',
+                    'Powered & Developed By Lockene pvt.ltd.',
                     style: TextStyle(
                         fontSize: media.width * twelve,
                         fontWeight: FontWeight.w500,

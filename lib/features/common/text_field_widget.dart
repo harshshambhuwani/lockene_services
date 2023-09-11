@@ -28,7 +28,7 @@ class TextFieldWidget extends StatelessWidget {
     this.style,
     this.textAlign,
     this.suffix,
-    this.controller
+    this.controller, this.maxlenth
   }) : super(key: key);
 
   final FormFieldSetter<String>? onSaved;
@@ -48,6 +48,7 @@ class TextFieldWidget extends StatelessWidget {
   final Widget? suffixIcon;
   final Widget? suffix;
   final TextEditingController? controller;
+  final int? maxlenth;
 
   @override
   Widget build(BuildContext context) {
@@ -77,6 +78,7 @@ class TextFieldWidget extends StatelessWidget {
             onSaved: onSaved,
             onChanged: onChanged,
             validator: validator,
+            maxLength: maxlenth,
             //initialValue: initialValue ?? '',
             style: style ?? Get.textTheme.bodyText2,
             obscureText: obscureText ?? false,

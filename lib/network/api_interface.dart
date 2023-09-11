@@ -3,10 +3,12 @@ import 'dart:io';
 
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:service/Admin/network/model/add_client.dart';
 import 'package:service/Admin/network/model/costome_service_model.dart';
 import 'package:service/Admin/network/model/country_model.dart';
 import 'package:service/Admin/network/model/get_client_list_model.dart';
 import 'package:service/Admin/network/model/get_profile_model.dart';
+import 'package:service/Admin/network/model/line_list_model.dart';
 import 'package:service/Admin/network/model/login_model.dart';
 import 'package:http/http.dart' as http;
 import 'package:service/Admin/network/model/otp_model.dart';
@@ -288,12 +290,16 @@ class ApiInterface {
   }
 
   Future<UpdateProfileModel> updateProfileInformation(
-      String authToken, String fullName, String mobileNumber, String emailAddress, String addressText, String userId,) async {
+    String authToken,
+    String fullName,
+    String mobileNumber,
+    String emailAddress,
+    String addressText,
+    String userId,
+  ) async {
     var url = ApisPath().updateProfileInfo;
-    print("fromUpdateApi ${authToken}");
     var request = http.MultipartRequest('POST', Uri.parse(url));
     {
-
       request.fields['tsp_id'] = userId;
       request.fields['email'] = emailAddress;
       request.fields['name'] = fullName;
@@ -308,7 +314,8 @@ class ApiInterface {
       Map<String, String> headers = {
         'Client-Service': 'frontend-client',
         'Auth-Token': "1f0684243e0fa74fe3e77f4e1fbf88a2",
-        'Content-Type': "multipart/form-data; boundary=<calculated when request is sent>",
+        'Content-Type':
+            "multipart/form-data; boundary=<calculated when request is sent>",
       };
       request.headers.addAll(headers);
       try {
@@ -320,7 +327,6 @@ class ApiInterface {
         print("updateProfileInformation ${ApisPath().updateProfileInfo}");
         if (response.statusCode == 200) {
           return UpdateProfileModel.fromJson(jsonDecode(response.body));
-
         } else {
           return UpdateProfileModel.fromJson(jsonDecode(response.body));
         }
@@ -329,16 +335,12 @@ class ApiInterface {
       }
       return UpdateProfileModel();
     }
-
   }
-
-
 
   Future<GetClientListData> getClientList() async {
     var url = ApisPath().getClientListData;
     var request = http.MultipartRequest('POST', Uri.parse(url));
     {
-
       request.fields['sp_id'] = "3812";
 
       Map<String, String> headers = {
@@ -355,22 +357,106 @@ class ApiInterface {
         print("updateProfileInformation ${ApisPath().updateProfileInfo}");
         if (response.statusCode == 200) {
           return GetClientListData.fromJson(jsonDecode(response.body));
-
         } else {
           return GetClientListData.fromJson(jsonDecode(response.body));
         }
       } catch (e) {
-       // debugPrint("fromCatchasssssfromRegistrationApi $e");
+        // debugPrint("fromCatchasssssfromRegistrationApi $e");
       }
       return GetClientListData();
     }
+  }
 
+  // void addClientToDataBase() {}
+
+  Future<AddingClient> addClientToDataBase(
+      String fullName,
+      String email,
+      String phoneNumber,
+      String addressLine,
+      String country,
+      String state,
+      String city,
+      String pinCode,
+      String spId) async {
+    var url = ApisPath().postAddClientToDb;
+    var request = http.MultipartRequest('POST', Uri.parse(url));
+    {
+      Map<String, String> headers = {
+        'Client-Service': 'frontend-client',
+        'Auth-Key': 'ExVfMAc9A8vQcE3zY0',
+      };
+      request.fields['name'] = fullName;
+      request.fields['number'] = phoneNumber;
+      request.fields['email'] = email;
+      request.fields['address'] = phoneNumber;
+      request.fields['email'] = phoneNumber!;
+      request.fields['country'] = country;
+      request.fields['state'] = state;
+      request.fields['city'] = city;
+      request.fields['zip'] = pinCode;
+      request.fields['sp_id'] = spId;
+     // request.fields['sp_id'] = "3812";
+      request.headers.addAll(headers);
+
+      try {
+        var streamedResponse = await request.send();
+        var response = await http.Response.fromStream(streamedResponse);
+        print("ApiCall ${request.fields}");
+        print("fromRegistrationApi ${response.body}");
+        if (response.statusCode == 200) {
+          return AddingClient.fromJson(jsonDecode(response.body));
+        } else {
+          return AddingClient.fromJson(jsonDecode(response.body));
+        }
+      } catch (e) {
+        debugPrint("fromCatchasssss $e");
+      }
+      return AddingClient();
+    }
   }
 
 
 
+
+
+  Future<LineListModel> getLineList() async {
+    var url = ApisPath().postGetLineList;
+    var request = http.MultipartRequest('POST', Uri.parse(url));
+    {
+      request.fields['sp_id'] = "3812";
+
+      Map<String, String> headers = {
+        'Client-Service': 'frontend-client',
+        'Auth-Key': "ExVfMAc9A8vQcE3zY0",
+      };
+      request.headers.addAll(headers);
+      try {
+        var streamedResponse = await request.send();
+        var response = await http.Response.fromStream(streamedResponse);
+        print("ApiCall ${request.fields}");
+        print("updateProfileInformation ${response.body}");
+        print("updateProfileInformation ${response.statusCode}");
+        print("updateProfileInformation ${ApisPath().updateProfileInfo}");
+        if (response.statusCode == 200) {
+          return LineListModel.fromJson(jsonDecode(response.body));
+        } else {
+          return LineListModel.fromJson(jsonDecode(response.body));
+        }
+      } catch (e) {
+        // debugPrint("fromCatchasssssfromRegistrationApi $e");
+      }
+      return LineListModel();
+    }
+  }
+
+
+
+
+
+
+
+
+
+
 }
-
-
-
-
