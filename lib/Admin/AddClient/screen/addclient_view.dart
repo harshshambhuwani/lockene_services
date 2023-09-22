@@ -1,7 +1,9 @@
+import 'package:contacts_service/contacts_service.dart';
 import 'package:csc_picker/csc_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_session_manager/flutter_session_manager.dart';
 import 'package:get/get.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:service/Admin/AddClient/screen/allclient_view.dart';
 import 'package:service/Admin/session/session.dart';
 import 'package:service/constants.dart';
@@ -15,6 +17,7 @@ import '../../../features/common/ui.dart';
 import '../../../routes/app_routes.dart';
 import '../../../styles/styles.dart';
 import '../controller/addclient_controller.dart';
+import 'mycontacts.dart';
 
 class AddClientView extends StatefulWidget {
   const AddClientView({Key? key}) : super(key: key);
@@ -79,7 +82,10 @@ class _AddClientViewState extends State<AddClientView> {
                         horizontal: 20.0, vertical: 5.0),
                     child: ElevatedButton(
                       onPressed: () {
-                        // Get.toNamed(Routes.MY_CONTACT);
+                         // Get.toNamed(Routes.MY_CONTACT);
+                         // Get.to(MyContactView());
+                        requestContactsPermission();
+
                       },
                       style: ElevatedButton.styleFrom(
                         primary: Colors.white, // background color
@@ -231,7 +237,7 @@ class _AddClientViewState extends State<AddClientView> {
                                         Radius.circular(10)),
                                     color: Colors.white,
                                     border: Border.all(
-                                        color: Colors.grey.shade300, width: 1)),
+                                        color: Colors.orange, width: 1)),
                                 disabledDropdownDecoration: BoxDecoration(
                                     borderRadius: const BorderRadius.all(
                                         Radius.circular(10)),
@@ -506,7 +512,7 @@ class _AddClientViewState extends State<AddClientView> {
                                     color: Colors.black,
                                     fontSize: 17,
                                     fontWeight: FontWeight.bold),
-                                dropdownItemStyle: TextStyle(
+                                dropdownItemStyle: const TextStyle(
                                   color: Colors.black,
                                   fontSize: 14,
                                 ),
@@ -670,6 +676,28 @@ class _AddClientViewState extends State<AddClientView> {
 
   Future<int> getUserId() async {
     return await SessionManager().get(SessionDataKey().userId);
+  }
+
+  void requestContactsPermission() async {
+    final PermissionStatus status = await Permission.contacts.request();
+    if (status.isGranted) {
+      getContacts();
+      // You have permission to access contacts.
+    } else {
+      // You don't have permission. Handle this case.
+    }
+  }
+
+  Future<void> getContacts() async {
+    Iterable<Contact> contacts = await ContactsService.getContacts();
+    List<String> contactsName = [];
+    for (var contact in contacts) {
+      print('Name: ${contact.displayName}');
+      contactsName.add(contact.displayName ?? "");
+      print('Phone: ${contact.phones}');
+      // You can access other contact properties as needed.
+    };
+    Get.to(MyContactView(contactList :contacts, newStringContact :contactsName));
   }
 }
 

@@ -6,6 +6,7 @@ import 'package:get/get.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:service/routes/app_routes.dart';
 import 'package:service/routes/theme1_app_pages.dart';
+import 'package:service/search_funcationality.dart';
 import 'styles/styles.dart';
 
 void main() {
@@ -24,6 +25,7 @@ class MyApp extends StatelessWidget {
       title: 'Lockene',
       debugShowCheckedModeBanner: false,
       home: const MySplashScreen(),
+      // home: const SearchScreen(),
       getPages: Theme1AppPages.routes,
       localizationsDelegates: GlobalMaterialLocalizations.delegates,
       defaultTransition: Transition.cupertino,
@@ -84,7 +86,7 @@ class _MySplashScreenState extends State<MySplashScreen> {
                     height: media.height * 0.02,
                   ),
                   Text(
-                    'Powered & Developed By Lockene pvt.ltd.',
+                    'Powered & Developed By Lockene,Inc.',
                     style: TextStyle(
                         fontSize: media.width * twelve,
                         fontWeight: FontWeight.w500,

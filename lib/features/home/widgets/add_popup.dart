@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:service/Admin/AddQuote/screen/addquote_view.dart';
 
 import '../../../routes/app_routes.dart';
 
@@ -31,7 +32,13 @@ class _Add_PopupState extends State<Add_Popup> {
       children: [
        GestureDetector(
         onTap: (){
-          Get.offAndToNamed(Routes.ADD_QUOTE);
+          //Get.offAndToNamed(Routes.ADD_QUOTE);
+          Get.to(AddQuoteView(
+              clientId :"",
+              clientName: "",
+              clientPhone: "",
+              clientCity: "",
+              clientEmail : ""));
           // Navigator.pop(context);
         },
          child: Container(

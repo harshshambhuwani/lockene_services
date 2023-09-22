@@ -151,7 +151,7 @@ class Theme1AppPages {
     GetPage(name: Routes.NOTIFICATIONS , page: () => MyNotificationView(), binding: MyNotificationBinding()),
     GetPage(name: Routes.ALL_CLIENT , page: () => AllClientView(), binding: AddClientBinding()),
     GetPage(name: Routes.ADD_CLIENT , page: () => AddClientView(), binding: AddClientBinding()),
-    // GetPage(name: Routes.MY_CONTACT , page: () => MyContactView(), binding: AddClientBinding()),
+    GetPage(name: Routes.MY_CONTACT , page: () => MyContactView(), binding: AddClientBinding()),
     GetPage(name: Routes.ADD_KYC , page: () => KycView(), binding: KycBinding()),
     GetPage(name: Routes.VIEW_QUOTE , page: () => QuoteView(), binding: ViewQuoteBinding()),
     GetPage(name: Routes.VIEW_JOB , page: () => JobView(), binding: ViewQuoteBinding()),

@@ -98,6 +98,8 @@ dependencies:
   dropdown_search: ^1.0.0-beta2
   csc_picker: ^0.2.7
   flutter_native_timezone: ^2.0.0
+  contacts_service:
+#  //permission_handler:
 
 
 #  toggle_switch: ^2.0.1

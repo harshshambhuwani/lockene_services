@@ -10,6 +10,8 @@ String updateProfile = "tsit/Fsm/UpdateFsmProfile";
 String getClientList = "tsit/Fsm/getClientList";
 String addClient = "tsit/Fsm/addClientRequest";
 String getLineList = "tsit/Fsm/getLineItemList";
+String addLineListItem = "tsit/Fsm/addLineItem";
+String getQuoteList = "tsit/Fsm/quoteList";
 
 class ApisPath {
   String postLogin = baseUrl + loginApiUrl;
@@ -23,5 +25,7 @@ class ApisPath {
   String getClientListData = baseUrl + getClientList;
   String postAddClientToDb = baseUrl + addClient;
   String postGetLineList = baseUrl + getLineList;
+  String postAddItemLine = baseUrl + addLineListItem;
+  String postGetQuoteList = baseUrl + getQuoteList;
 }
 

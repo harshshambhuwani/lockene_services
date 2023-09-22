@@ -9,8 +9,10 @@ import 'package:service/Admin/network/model/line_list_model.dart';
 import 'package:service/Admin/network/model/login_model.dart';
 import 'package:http/http.dart' as http;
 import 'package:service/Admin/network/model/otp_model.dart';
+import 'package:service/Admin/network/model/quote_list_model.dart';
 import 'package:service/Admin/network/model/registration_model.dart';
 import 'package:service/Admin/network/model/reset_password_model.dart';
+import 'package:service/Admin/network/model/save_line_model.dart';
 import 'package:service/Admin/network/model/update_profile_model.dart';
 import 'package:service/network/api_path.dart';
 
@@ -393,7 +395,7 @@ class ApiInterface {
       request.fields['city'] = city;
       request.fields['zip'] = pinCode;
       request.fields['sp_id'] = spId;
-     // request.fields['sp_id'] = "3812";
+      // request.fields['sp_id'] = "3812";
       request.headers.addAll(headers);
 
       try {
@@ -413,15 +415,13 @@ class ApiInterface {
     }
   }
 
-
-
-
-
-  Future<LineListModel> getLineList() async {
+  Future<LineListModel> getLineList(String userId) async {
+    print("fromGeTLineListuserId $userId");
     var url = ApisPath().postGetLineList;
     var request = http.MultipartRequest('POST', Uri.parse(url));
     {
-      request.fields['sp_id'] = "3812";
+      // request.fields['sp_id'] = "3812";
+      request.fields['sp_id'] = userId;
 
       Map<String, String> headers = {
         'Client-Service': 'frontend-client',
@@ -447,10 +447,148 @@ class ApiInterface {
     }
   }
 
+  Future<SaveLineListModel> saveLineList(
+      String userId,
+      String typeValue,
+      String itemName,
+      String description,
+      String price,
+      String quantity,
+      String totalValue) async {
+    print("fromGeTLineListuserId $userId");
+    var url = ApisPath().postAddItemLine;
+    var request = http.MultipartRequest('POST', Uri.parse(url));
+    {
+      request.fields['sp_id'] = userId;
+      request.fields['type'] = typeValue;
+      request.fields['name'] = itemName;
+      request.fields['description'] = description;
+      request.fields['price'] = price;
+      request.fields['qty'] = quantity;
+      request.fields['total'] = totalValue;
+
+      Map<String, String> headers = {
+        'Client-Service': 'frontend-client',
+        'Auth-Key': "ExVfMAc9A8vQcE3zY0",
+      };
+      request.headers.addAll(headers);
+      try {
+        var streamedResponse = await request.send();
+        var response = await http.Response.fromStream(streamedResponse);
+
+        if (response.statusCode == 200) {
+          return SaveLineListModel.fromJson(jsonDecode(response.body));
+        } else {
+          return SaveLineListModel.fromJson(jsonDecode(response.body));
+        }
+      } catch (e) {
+        // debugPrint("fromCatchasssssfromRegistrationApi $e");
+      }
+      return SaveLineListModel();
+    }
+  }
+
+  Future<SaveLineListModel> createQuotes(
+      String jobTitle,
+      String instructionController,
+      String clientId,
+      String clientName,
+      String tflPrice,
+      String tflTotal,
+      String clientPhone,
+      String clientCity,
+      String clientEmail,
+      String userId,
+      String tspId,
+      String tflType,
+      String tflName,
+      String tflDescription,
+      String tflQty) async {
+    var url = "https://mistrichacha.com/tsit/Fsm/CreateQuote";
+    var request = http.MultipartRequest('POST', Uri.parse(url));
+    {
+      request.fields['fsm_id'] = "3812";
+      request.fields['client_id'] = clientId;
+      request.fields['name'] = clientName;
+      request.fields['email'] = clientEmail;
+      request.fields['number'] = tflPrice;
+      request.fields['address'] = clientCity;
+      request.fields['country'] = "India";
+      request.fields['state'] = "Maharastra";
+      request.fields['total'] = tflTotal;
+      request.fields['city'] = "Nagpur";
+      request.fields['zip'] = "440030";
+      request.fields['job_title'] = jobTitle;
+      request.fields['line_item_id'] = "2";
+      request.fields['subtotal'] = tflTotal;
+      request.fields['discount_type'] = "Fixed";
+      request.fields['discount_value'] = "10";
+      request.fields['tax'] = "2";
+      request.fields['tax_name'] = "GST";
+      request.fields['tax_rate'] = "2";
+      request.fields['tax_description'] = "Indian gov. Tax";
+      request.fields['quote_status'] = "Drafted Quote";
+      request.fields['required_deposite_type'] = "Percentage";
+      request.fields['deposite_value'] = "15";
+      request.fields['instruction'] = instructionController;
+
+      Map<String, String> headers = {
+        'Client-Service': 'frontend-client',
+        'Auth-Key': "ExVfMAc9A8vQcE3zY0",
+      };
+      request.headers.addAll(headers);
+      try {
+        var streamedResponse = await request.send();
+        var response = await http.Response.fromStream(streamedResponse);
+        print("ApiCall ${request.fields}");
+        print("updateProfileInformation ${response.body}");
+        print("updateProfileInformation ${response.statusCode}");
+        print("updateProfileInformation ${ApisPath().updateProfileInfo}");
+        if (response.statusCode == 200) {
+          return SaveLineListModel.fromJson(jsonDecode(response.body));
+        } else {
+          return SaveLineListModel.fromJson(jsonDecode(response.body));
+        }
+      } catch (e) {
+        // debugPrint("fromCatchasssssfromRegistrationApi $e");
+      }
+      return SaveLineListModel();
+    }
+  }
 
 
 
 
+  Future<QuoteList> getQuoteList() async {
+    var url = ApisPath().postGetQuoteList;
+    var request = http.MultipartRequest('POST', Uri.parse(url));
+    {
+      request.fields['fsm_id'] = "3812";
+      request.fields['quote_status'] = "";
+
+      Map<String, String> headers = {
+        'Client-Service': 'frontend-client',
+        'Auth-Key': "ExVfMAc9A8vQcE3zY0",
+      };
+      request.headers.addAll(headers);
+      try {
+        var streamedResponse = await request.send();
+        var response = await http.Response.fromStream(streamedResponse);
+        print("ApiCall ${request.fields}");
+        print("getQuoteList ${response.body}");
+        print("getQuoteList ${response.statusCode}");
+        print("getQuoteList ${ApisPath().postGetQuoteList}");
+        if (response.statusCode == 200) {
+          return QuoteList.fromJson(jsonDecode(response.body));
+        } else {
+          return QuoteList.fromJson(jsonDecode(response.body));
+        }
+      } catch (e) {
+        // debugPrint("fromCatchasssssfromRegistrationApi $e");
+      }
+      return QuoteList();
+    }
+  }
 
 
 

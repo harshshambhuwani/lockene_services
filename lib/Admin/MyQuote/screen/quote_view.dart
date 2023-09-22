@@ -13,6 +13,7 @@ import 'package:service/Admin/MyQuote/widgets/booking_actions_widget.dart';
 import 'package:service/Admin/MyQuote/widgets/booking_row_widget.dart';
 import 'package:service/Admin/MyQuote/widgets/booking_til_widget.dart';
 import 'package:service/Admin/MyQuote/widgets/booking_title_bar_widget.dart';
+import 'package:service/Admin/network/model/quote_list_model.dart';
 import 'package:service/routes/app_routes.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:url_launcher/url_launcher.dart' as UrlLauncher;
@@ -25,9 +26,16 @@ import '../../../styles/styles.dart';
 import '../controller/viewquote_controller.dart';
 
 
-class QuoteView extends GetView<ViewQuoteController> {
+class QuoteView extends StatefulWidget {
+  QuoteData? quoteData;
+    QuoteView({Key? key, this.quoteData}) : super(key: key);
 
-var title = "quote";
+  @override
+  State<QuoteView> createState() => _QuoteViewState();
+}
+
+class _QuoteViewState extends State<QuoteView> {
+  var title = "quote";
 
   @override
   Widget build(BuildContext context) {
@@ -35,7 +43,7 @@ var title = "quote";
       bottomNavigationBar: BookingActionsWidget(title),
       body: RefreshIndicator(
           onRefresh: () async {
-            controller.refreshBooking(showMessage: true);
+           // controller.refreshBooking(showMessage: true);
           },
           child: CustomScrollView(
             primary: true,
@@ -58,25 +66,25 @@ var title = "quote";
                   },
                 ),
                 actions: [
-                        MaterialButton(
-                         enableFeedback: true,
-                        elevation: 0,
-                        onPressed: () {
+                  MaterialButton(
+                    enableFeedback: true,
+                    elevation: 0,
+                    onPressed: () {
 
-                        },
-                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-                        color: Colors.white24,
-                        child: Wrap(
-                          crossAxisAlignment: WrapCrossAlignment.center,
-                          spacing: 5,
-                          children: [
-                            Text("Status : ".tr, style: Get.textTheme.bodyText2!.merge(TextStyle(color: Colors.black))),
-                            Text("Approved".tr, style: Get.textTheme.bodyText2!.merge(TextStyle(color: Colors.orange))),
-                            Icon(Icons.done_outline, color: Colors.orange),
+                    },
+                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+                    color: Colors.white24,
+                    child: Wrap(
+                      crossAxisAlignment: WrapCrossAlignment.center,
+                      spacing: 5,
+                      children: [
+                        Text("Status : ".tr, style: Get.textTheme.bodyText2!.merge(TextStyle(color: Colors.black))),
+                        Text(widget.quoteData?.tqsStatus ?? "", style: Get.textTheme.bodyText2!.merge(TextStyle(color: Colors.orange))),
+                        Icon(Icons.done_outline, color: Colors.orange),
 
-                          ],
-                        ),
-                      ).paddingSymmetric(horizontal: 20,vertical: 8)
+                      ],
+                    ),
+                  ).paddingSymmetric(horizontal: 20,vertical: 8)
                 ],
                 bottom: buildBookingTitleBarWidget(/*controller.booking*/),
                 flexibleSpace: FlexibleSpaceBar(
@@ -105,20 +113,20 @@ var title = "quote";
                   children: [
                     buildContactCustomer(),
                     BookingTilWidget(
-                          title: InkWell(
-                            onTap: (){
-                              Get.toNamed(Routes.ALL_LINE,arguments: "quoteview");
-                            },
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Text("Line Item".tr, style: Get.textTheme.subtitle2),
-                                Text("Add More".tr, style: Get.textTheme.subtitle2!.merge(TextStyle(color: Colors.orange))),
-                              ],
-                            ),
-                          ),
-                          content: Column(
-                            children: [
+                      title: InkWell(
+                        onTap: (){
+                         // Get.toNamed(Routes.ALL_LINE,arguments: "quoteview");
+                        },
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text("Line Item".tr, style: Get.textTheme.subtitle2),
+                            Text("Add More".tr, style: Get.textTheme.subtitle2!.merge(TextStyle(color: Colors.orange))),
+                          ],
+                        ),
+                      ),
+                      content: Column(
+                        children: [
                           InkWell(
                             onTap: (){
                               Get.toNamed(Routes.EDIT_LINE,arguments: "quoteview");
@@ -129,29 +137,29 @@ var title = "quote";
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                              Text("Floor Cleaning".tr, style: Get.textTheme.subtitle2!.merge(TextStyle(color: Colors.orange))).paddingSymmetric(vertical: 2.5),
-                              Text("Description regarding work xyz".tr, maxLines: 3,style: Get.textTheme.subtitle2!.merge(TextStyle(color: Colors.grey.shade600))).paddingSymmetric(vertical: 5.0),
-                              Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                children: [Text('1 x ₹ 5110',style: Get.textTheme.subtitle2!.merge(TextStyle(color: Colors.black))),Text('₹ 5000')],).marginOnly(bottom: 2.5)
-                            ],),),
+                                  Text("Floor Cleaning".tr, style: Get.textTheme.subtitle2!.merge(TextStyle(color: Colors.orange))).paddingSymmetric(vertical: 2.5),
+                                  Text("Description regarding work xyz".tr, maxLines: 3,style: Get.textTheme.subtitle2!.merge(TextStyle(color: Colors.grey.shade600))).paddingSymmetric(vertical: 5.0),
+                                  Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    children: [Text('1 x ₹ ${widget.quoteData?.total}',style: Get.textTheme.subtitle2!.merge(TextStyle(color: Colors.black))),Text('₹ 5000')],).marginOnly(bottom: 2.5)
+                                ],),),
                           ),
                           Divider(color: Colors.grey.shade400,),
-                              Container(
+                          Container(
                             alignment: Alignment.topLeft,
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                            Text("Plant Cutting".tr, style: Get.textTheme.subtitle2!.merge(TextStyle(color: Colors.orange))).paddingSymmetric(vertical: 2.5),
-                            Text("Description regarding work xyz".tr, maxLines: 3,style: Get.textTheme.subtitle2!.merge(TextStyle(color: Colors.grey.shade600))).paddingSymmetric(vertical: 5.0),
-                            Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [Text('1 x ₹ 5110',style: Get.textTheme.subtitle2!.merge(TextStyle(color: Colors.black))),Text('₹ 5000')],).marginOnly(bottom: 2.5)
-                          ],),),
+                                Text("Plant Cutting".tr, style: Get.textTheme.subtitle2!.merge(TextStyle(color: Colors.orange))).paddingSymmetric(vertical: 2.5),
+                                Text("Description regarding work xyz".tr, maxLines: 3,style: Get.textTheme.subtitle2!.merge(TextStyle(color: Colors.grey.shade600))).paddingSymmetric(vertical: 5.0),
+                                Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  children: [Text('1 x ₹ 5110',style: Get.textTheme.subtitle2!.merge(TextStyle(color: Colors.black))),Text('₹ 5000')],).marginOnly(bottom: 2.5)
+                              ],),),
                           Divider(color: Colors.grey.shade400,),
                           BookingRowWidget(
                               description: "Subtotal".tr,
                               child: Align(
                                 alignment: Alignment.centerRight,
-                                child: Text("₹ " + "10220"),
+                                child: Text("₹ " + "0"),
                               ),
                               hasDivider: true),
                           GestureDetector(
@@ -162,7 +170,7 @@ var title = "quote";
                                 description: "Discount".tr,
                                 child: Align(
                                   alignment: Alignment.centerRight,
-                                  child: Text("-- ₹ " + "220",style: TextStyle(color: Colors.orange,fontWeight: FontWeight.w500),),
+                                  child: Text("-- ₹ " + "0",style: TextStyle(color: Colors.orange,fontWeight: FontWeight.w500),),
                                 ),
                                 hasDivider: true),
                           ),
@@ -174,7 +182,7 @@ var title = "quote";
                                 description: "Tax".tr,
                                 child: Align(
                                   alignment: Alignment.centerRight,
-                                  child: Text("₹ " + "220",style: TextStyle(color: Colors.orange,fontWeight: FontWeight.w500),),
+                                  child: Text("₹ " + "0",style: TextStyle(color: Colors.orange,fontWeight: FontWeight.w500),),
                                 ),
                                 hasDivider: true),
                           ),
@@ -182,7 +190,7 @@ var title = "quote";
                             description: "Total Amount".tr,
                             child: Align(
                               alignment: Alignment.centerRight,
-                              child: Text("₹ " + "10,220",
+                              child: Text("₹ " + "${widget.quoteData?.total}",
                                   style: Get.textTheme.headline6),
                             ),
                             hasDivider: true,
@@ -201,8 +209,8 @@ var title = "quote";
                             ),
                           ),
                         ],
-                          ),
-                        ),
+                      ),
+                    ),
                     Container(
                       margin: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
                       padding: EdgeInsets.symmetric(horizontal: 20, vertical: 15),
@@ -212,13 +220,13 @@ var title = "quote";
                         children: [
                           Text('Client Message'.tr, style: Get.textTheme.subtitle2).marginOnly(bottom: 5.0),
                           TextFormField(
-                          initialValue: 'jsnxhbsxhbshxshxbh',
-                          keyboardType: TextInputType.text,
-                          style: TextStyle(color: Colors.grey.shade700,fontSize: 14),
-                          cursorColor: Colors.orange,
-                          decoration: Ui.getInputDecoration(
-                            hintText: 'Please enter client message'
-                          ),
+                            initialValue: 'jsnxhbsxhbshxshxbh',
+                            keyboardType: TextInputType.text,
+                            style: TextStyle(color: Colors.grey.shade700,fontSize: 14),
+                            cursorColor: Colors.orange,
+                            decoration: Ui.getInputDecoration(
+                                hintText: 'Please enter client message'
+                            ),
 
                           )
                         ],
@@ -240,10 +248,10 @@ var title = "quote";
 
   BookingTitleBarWidget buildBookingTitleBarWidget(/*Rx<Booking> _booking*/) {
     return BookingTitleBarWidget(
-      title:
-      // Obx(() {
-      //   return
-          Row(
+        title:
+        // Obx(() {
+        //   return
+        Row(
           children: [
             Flexible(
               fit: FlexFit.tight,
@@ -252,7 +260,7 @@ var title = "quote";
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
                   AutoSizeText(
-                    'Garden Cleaning',
+                    widget.quoteData?.tbJobTitle ?? "",
                     style: Get.textTheme.headline5!.merge(TextStyle(height: 1.1)),
                     overflow: TextOverflow.fade,
                   ),
@@ -261,7 +269,7 @@ var title = "quote";
                       Icon(Icons.person_outline, color: Colors.grey),
                       SizedBox(width: 8),
                       AutoSizeText(
-                        /*_booking.value.user?.name ?? */'Ankush Thengne',
+                        widget.quoteData?.tbClientName ?? "",
                         style: Get.textTheme.bodyText1!.merge(TextStyle(color:Colors.grey)),
                         maxLines: 1,
                         overflow:TextOverflow.fade,
@@ -273,7 +281,7 @@ var title = "quote";
                       Icon(Icons.place_outlined, color: Colors.grey),
                       SizedBox(width: 8),
                       Expanded(
-                        child: AutoSizeText(/*_booking.value.address?.address ??*/ 'Bung. No 54,Vani', maxLines: 2, overflow: TextOverflow.ellipsis, style: TextStyle(color:Colors.grey)).paddingOnly(right: 10.0),
+                        child: AutoSizeText(widget.quoteData?.tbAddress ?? "", maxLines: 2, overflow: TextOverflow.ellipsis, style: TextStyle(color:Colors.grey)).paddingOnly(right: 10.0),
                       ),
                     ],
                     // spacing: 8,
@@ -293,47 +301,47 @@ var title = "quote";
             //     padding: EdgeInsets.symmetric(horizontal: 5, vertical: 6),
             //   ),
             // if (_booking.value.bookingAt != null)
-              Container(
-                width: 80,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(/*DateFormat('HH:mm', Get.locale.toString()).format(_booking.value.bookingAt!)*/"12:30",
-                        maxLines: 1,
-                        style: Get.textTheme.bodyText2!.merge(
-                          TextStyle(color: Colors.orange, height: 1.4),
-                        ),
-                        softWrap: false,
-                        textAlign: TextAlign.center,
-                        overflow: TextOverflow.fade),
-                    Text(/*DateFormat('dd', Get.locale.toString()).format(_booking.value.bookingAt! ?? '')*/"28",
-                        maxLines: 1,
-                        style: Get.textTheme.headline4!.merge(
-                          TextStyle(color: Colors.orange, height: 1),
-                        ),
-                        softWrap: false,
-                        textAlign: TextAlign.center,
-                        overflow: TextOverflow.fade),
-                    Text(/*DateFormat('MMM', Get.locale.toString()).format(_booking.value.bookingAt ?? '')*/"Feb",
-                        maxLines: 1,
-                        style: Get.textTheme.bodyText2!.merge(
-                          TextStyle(color: Colors.orange, height: 1),
-                        ),
-                        softWrap: false,
-                        textAlign: TextAlign.center,
-                        overflow: TextOverflow.fade),
+            Container(
+              width: 80,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(/*DateFormat('HH:mm', Get.locale.toString()).format(_booking.value.bookingAt!)*/"12:30",
+                      maxLines: 1,
+                      style: Get.textTheme.bodyText2!.merge(
+                        TextStyle(color: Colors.orange, height: 1.4),
+                      ),
+                      softWrap: false,
+                      textAlign: TextAlign.center,
+                      overflow: TextOverflow.fade),
+                  Text(/*DateFormat('dd', Get.locale.toString()).format(_booking.value.bookingAt! ?? '')*/"28",
+                      maxLines: 1,
+                      style: Get.textTheme.headline4!.merge(
+                        TextStyle(color: Colors.orange, height: 1),
+                      ),
+                      softWrap: false,
+                      textAlign: TextAlign.center,
+                      overflow: TextOverflow.fade),
+                  Text(/*DateFormat('MMM', Get.locale.toString()).format(_booking.value.bookingAt ?? '')*/"Feb",
+                      maxLines: 1,
+                      style: Get.textTheme.bodyText2!.merge(
+                        TextStyle(color: Colors.orange, height: 1),
+                      ),
+                      softWrap: false,
+                      textAlign: TextAlign.center,
+                      overflow: TextOverflow.fade),
 
-                  ],
-                ),
-                decoration: BoxDecoration(
-                  color: Colors.orange.shade50,
-                  borderRadius: BorderRadius.all(Radius.circular(10)),
-                ),
-                padding: EdgeInsets.symmetric(horizontal: 5, vertical: 6),
+                ],
               ),
+              decoration: BoxDecoration(
+                color: Colors.orange.shade50,
+                borderRadius: BorderRadius.all(Radius.circular(10)),
+              ),
+              padding: EdgeInsets.symmetric(horizontal: 5, vertical: 6),
+            ),
           ],
         )
-        // ;}),
+      // ;}),
     );
   }
 
@@ -387,8 +395,8 @@ var title = "quote";
       ),
     );
   }
-
 }
+
 
 void _showAlertDialog(BuildContext context, [ViewQuoteController ? controller]) {
   String? valueChoose;

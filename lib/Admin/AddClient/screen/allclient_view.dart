@@ -114,6 +114,7 @@ class _AllClientViewState extends State<AllClientView> {
                                 // String? stateName;
                                 // String? cityName;
                                 Get.to(AddQuoteView(
+                                    clientId : data?[index].id,
                                     clientName: data?[index].tcCustName,
                                     clientPhone: data?[index].tcPhoneNumber,
                                     clientCity: data?[index].cityName,
@@ -198,7 +199,7 @@ class _AllClientViewState extends State<AllClientView> {
                   onSubmitted: (value) {
                     // controller.searchEServices(keywords: value);
                   },
-                  autofocus: true,
+                  autofocus: false,
                   cursorColor: Get.theme.focusColor,
                   decoration: Ui.getInputDecoration(
                       hintText: "Search for member...".tr),
